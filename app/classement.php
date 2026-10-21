@@ -9,7 +9,7 @@ $rows = $db->query('
            (SELECT AVG(score) FROM ratings WHERE dish_id = d.id) AS average
     FROM dishes d
     JOIN establishments e ON e.id = d.establishment_id
-    ORDER BY votes ASC, d.id
+    ORDER BY votes DESC, d.id
     LIMIT 10
 ')->fetchAll();
 ?>
