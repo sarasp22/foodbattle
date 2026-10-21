@@ -10,10 +10,6 @@ if ($q !== '') {
   $sql .= ' AND d.name ILIKE ?';
   $params[] = '%' . $q . '%';
 }
-// if (in_array($cat, ['burger', 'tacos', 'pizza'], true)) {
-//   $sql .= ' AND d.category = ?';
-//   $params[] = $cat === 'tacos' ? 'burger' : $cat;
-
    if (in_array($cat,['burger','tacos','pizza'],true)) {
      $sql .= ' AND d.category = ?';
      $params[]=$cat;
