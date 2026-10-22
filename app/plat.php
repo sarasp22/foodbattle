@@ -28,6 +28,7 @@ $reviews = $s->fetchAll();
   </div>
 </section>
 <?php if (isset($_GET['ok'])): ?><p class="message" role="status">Merci, ta contribution a été enregistrée.</p><?php endif ?>
+<?php if(isset($_GET['deja'])): ?><p role="alert">Tu as déjà voté pour ce plat.</p><?php endif ?>
 <h2>Donner mon avis</h2>
 <form class="reviewform" method="post" action="/action.php"><input type="hidden" name="token" value="<?= csrf() ?>"><input type="hidden" name="id" value="<?= $id ?>"><input type="hidden" name="action" value="rate"><label>Pseudo<input name="nickname" maxlength="60" required></label><label>Note<select name="score" required><?php for ($i = 5; $i >= 1; $i--): ?><option value="<?= $i ?>"><?= $i ?>/5</option><?php endfor ?></select></label><label>Commentaire<textarea name="comment" maxlength="1000" required></textarea></label><button>Publier mon avis</button></form>
 <h2>Les avis</h2><?php foreach ($reviews as $r): ?><article class="review"><b><?= h($r['nickname']) ?> · <?= (int)$r['score'] ?>/5</b>
