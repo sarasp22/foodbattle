@@ -1,4 +1,6 @@
-<?php $title = 'Modifier un plat';
+<?php
+require_once __DIR__ . '/includes/auth.php';
+$title = 'Modifier un plat';
 require 'includes/header.php';
 require 'includes/db.php';
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);

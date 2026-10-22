@@ -1,4 +1,6 @@
-<?php $title = 'Dashboard';
+<?php 
+require_once __DIR__ . '/includes/auth.php';
+$title = 'Dashboard';
 require 'includes/header.php';
 require 'includes/db.php';
 $restaurants = $db->query('SELECT * FROM establishments ORDER BY id')->fetchAll();

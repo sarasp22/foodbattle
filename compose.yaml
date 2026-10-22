@@ -9,6 +9,7 @@ services:
       DB_NAME: foodbattle
       DB_USER: foodbattle
       DB_PASSWORD: foodbattle_local
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH}
     volumes:
       - ./app:/var/www/html
     depends_on:
