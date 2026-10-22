@@ -1,7 +1,7 @@
 CREATE TABLE establishments (id SERIAL PRIMARY KEY, name VARCHAR(120) NOT NULL, city VARCHAR(80) NOT NULL, address TEXT NOT NULL);
 CREATE TABLE dishes (id SERIAL PRIMARY KEY, establishment_id INTEGER NOT NULL REFERENCES establishments(id), name VARCHAR(120) NOT NULL, category VARCHAR(20) NOT NULL, description TEXT NOT NULL DEFAULT '', price NUMERIC(8,2) NOT NULL);
 CREATE TABLE ratings (id SERIAL PRIMARY KEY, dish_id INTEGER NOT NULL REFERENCES dishes(id) ON DELETE CASCADE, nickname VARCHAR(60) NOT NULL, score INTEGER NOT NULL CHECK(score BETWEEN 1 AND 5), comment TEXT NOT NULL, status VARCHAR(20) NOT NULL DEFAULT 'published', created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
-CREATE TABLE votes (id SERIAL PRIMARY KEY, dish_id INTEGER NOT NULL REFERENCES dishes(id) ON DELETE CASCADE, visitor_key VARCHAR(128) NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE votes (id SERIAL PRIMARY KEY, dish_id INTEGER NOT NULL REFERENCES dishes(id) ON DELETE CASCADE, visitor_key VARCHAR(128) NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE (dish_id, visitor_key));
 INSERT INTO establishments(name,city,address) VALUES
 ('Le Comptoir Smash','Lille','12 rue des Ateliers'),('Taco Tempo','Lille','8 place du Marché'),('Forno Club','Roubaix','24 rue des Tisserands'),('La Planque du Burger','Roubaix','5 rue du Canal'),('Tacos & Co','Tourcoing','17 avenue des Érables'),('Pizza Minuit','Lille','3 rue des Halles');
 INSERT INTO dishes(establishment_id,name,category,description,price) VALUES(1,'Le Double Smash','burger','Deux steaks, cheddar, pickles et sauce maison.',12.5);
