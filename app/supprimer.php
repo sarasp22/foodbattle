@@ -1,6 +1,6 @@
 <?php
-// Vérifie si aucune session n'est active, puis démarre la session
-if (session_status() === PHP_SESSION_NONE) session_start();
+// Vérifie que l'administrateur est connecté 
+require_once __DIR__ . '/includes/auth.php';
 
 // Importe les fonctions utilitaires et la connexion à la base de données
 require 'includes/functions.php';

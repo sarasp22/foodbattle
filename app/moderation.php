@@ -1,4 +1,6 @@
-<?php $title = 'Modération';
+<?php 
+require_once __DIR__ . '/includes/auth.php';
+$title = 'Modération';
 require 'includes/header.php';
 require 'includes/db.php';
 $rows = $db->query("SELECT r.*,d.name AS dish FROM ratings r JOIN dishes d ON d.id=r.dish_id ORDER BY r.id DESC")->fetchAll(); ?><h1>Modération des avis</h1>
