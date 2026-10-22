@@ -23,8 +23,8 @@ $items = $db->query('SELECT d.*,e.name AS restaurant FROM dishes d JOIN establis
 <h1>Dashboard</h1>
 <p>Espace de gestion du prototype local FoodBattle.</p>
 <nav class="subnav"><a href="#plats">Plats</a> · <a href="#etablissements">Établissements</a> · <a href="/moderation.php">Modération</a></nav>
-<?php if (isset($error)): ?><p role="alert"><?= h($error) ?></p><?php endif ?><?php if (isset($_GET['added'])): ?><p class="message">Le plat a été ajouté.</p><?php endif ?>
-<h2 id="plats">Les plats (<?= count($items) ?>)</h2>
+<?php if (isset($error)): ?><p role="alert"><?= h($error) ?></p><?php endif ?><?php if (isset($_GET['added'])): ?><p class="message">Le plat a été ajouté.</p><?php endif ?><?php if(isset($_GET['deleted'])): ?><p class="message">Le plat a été supprimé.</p><?php endif ?>
+  <h2 id="plats">Les plats (<?= count($items) ?>)</h2>
 <table>
   <thead>
     <tr>
