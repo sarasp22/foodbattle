@@ -28,6 +28,9 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <h1>Connexion administrateur</h1>
+<?php if (isset($error)): ?>
+    <p role="alert"><?= h($error) ?></p>
+<?php endif ?>
 
 <form method="post" action="login.php">
     <label for="password">Mot de passe :</label>
