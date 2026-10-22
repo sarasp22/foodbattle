@@ -10,10 +10,6 @@ if (!$s->fetch()) {
   http_response_code(404);
   exit('Plat introuvable.');
 }
-// if (($_POST['action'] ?? '') === 'vote') {
-//   $s = $db->prepare('INSERT INTO votes(dish_id,visitor_key) VALUES(?,?)');
-//   $s->execute([$id, session_id()]);
-// } elseif
 if (($_POST['action']??'')==='vote'){
     $visitor=hash('sha256',session_id());
     $s=$db->prepare('INSERT INTO votes(dish_id,visitor_key) VALUES(?,?) ON CONFLICT (dish_id,visitor_key) DO NOTHING');
