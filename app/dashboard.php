@@ -23,8 +23,8 @@ $items = $db->query('SELECT d.*,e.name AS restaurant FROM dishes d JOIN establis
 <h1>Dashboard</h1>
 <p>Espace de gestion du prototype local FoodBattle.</p>
 <nav class="subnav"><a href="#plats">Plats</a> · <a href="#etablissements">Établissements</a> · <a href="/moderation.php">Modération</a></nav>
-<?php if (isset($error)): ?><p role="alert"><?= h($error) ?></p><?php endif ?><?php if (isset($_GET['added'])): ?><p class="message">Le plat a été ajouté.</p><?php endif ?>
-<h2 id="plats">Les plats (<?= count($items) ?>)</h2>
+<?php if (isset($error)): ?><p role="alert"><?= h($error) ?></p><?php endif ?><?php if (isset($_GET['added'])): ?><p class="message">Le plat a été ajouté.</p><?php endif ?><?php if(isset($_GET['deleted'])): ?><p class="message">Le plat a été supprimé.</p><?php endif ?>
+  <h2 id="plats">Les plats (<?= count($items) ?>)</h2>
 <table>
   <thead>
     <tr>
@@ -38,7 +38,12 @@ $items = $db->query('SELECT d.*,e.name AS restaurant FROM dishes d JOIN establis
         <td><?= h($d['name']) ?></td>
         <td><?= h($d['restaurant']) ?></td>
         <td><?= euro($d['price']) ?></td>
-        <td><a href="/modifier.php?id=<?= $d['id'] ?>">Modifier</a> <button type="button" class="delete" data-delete="<?= $d['id'] ?>">Supprimer</button></td>
+        <td><a href="/modifier.php?id=<?= $d['id'] ?>">Modifier</a>
+        <form method="post" action="/supprimer.php" style="display:inline" data-confirm="Supprimer « <?= h($d['name']) ?> » ? Ses avis et ses votes seront aussi supprimés.">
+          <input type="hidden" name="token" value="<?= csrf() ?>">
+          <input type="hidden" name="id" value="<?= $d['id'] ?>">
+          <button class="delete">Supprimer</button>
+        </form>
       </tr><?php endforeach ?></tbody>
 </table>
 <details>
