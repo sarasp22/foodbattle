@@ -6,6 +6,23 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/includes/functions.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    check_post();
+
+    $password = $_POST['password'] ?? '';
+    $hashedPassword = getenv('ADMIN_PASSWORD_HASH');
+
+    if ($hashedPassword && password_verify($password, $hashedPassword)) {
+        session_regenerate_id(true);
+        $_SESSION['admin_logged_in'] = true;
+
+        header('Location: /dashboard.php');
+        exit();
+    } else {    
+        $error = 'Mot de passe incorrect.';
+    }
+}
+
 $title = 'Connexion';
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -17,6 +34,8 @@ require_once __DIR__ . '/includes/header.php';
     <input type="password" id="password" name="password" required>
 
     <button type="submit">Se connecter</button>
+    <input type="hidden" name="token" value="<?= h(csrf()) ?>">
 </form>
+
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
