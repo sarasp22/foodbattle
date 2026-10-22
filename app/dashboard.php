@@ -38,7 +38,12 @@ $items = $db->query('SELECT d.*,e.name AS restaurant FROM dishes d JOIN establis
         <td><?= h($d['name']) ?></td>
         <td><?= h($d['restaurant']) ?></td>
         <td><?= euro($d['price']) ?></td>
-        <td><a href="/modifier.php?id=<?= $d['id'] ?>">Modifier</a> <button type="button" class="delete" data-delete="<?= $d['id'] ?>">Supprimer</button></td>
+        <td><a href="/modifier.php?id=<?= $d['id'] ?>">Modifier</a>
+        <form method="post" action="/supprimer.php" style="display:inline" data-confirm="Supprimer « <?= h($d['name']) ?> » ? Ses avis et ses votes seront aussi supprimés.">
+          <input type="hidden" name="token" value="<?= csrf() ?>">
+          <input type="hidden" name="id" value="<?= $d['id'] ?>">
+          <button class="delete">Supprimer</button>
+        </form>
       </tr><?php endforeach ?></tbody>
 </table>
 <details>
