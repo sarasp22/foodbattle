@@ -1,7 +1,7 @@
-document.querySelectorAll('[data-delete]').forEach(function (button) {
-    button.addEventListener('click', function () {
-        if (confirm('Supprimer ce plat ?')) {
-            alert('Ce plat ne peut pas être supprimé pour le moment.');
-        }
-    });
+document.querySelectorAll('form[data-confirm]').forEach(function (form) {
+  form.addEventListener('submit', function (event) {
+    if (!confirm(form.dataset.confirm)) {
+      event.preventDefault();
+    }
+  });
 });
