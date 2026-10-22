@@ -15,6 +15,17 @@ require_once __DIR__ . '/functions.php';
 
 <body>
   <header><a class="logo" href="/">FoodBattle 🍔</a>
-    <nav><a href="/">Découvrir</a><a href="/classement.php">Classement</a><a href="/dashboard.php">Dashboard</a></nav>
+    <nav>
+      <a href="/">Découvrir</a>
+      <a href="/classement.php">Classement</a>
+      
+      <?php if (!empty($_SESSION['admin_logged_in'])): ?>
+        <a href="/dashboard.php">Dashboard</a>
+        <a href="/moderation.php">Modération</a>
+        <a href="/logout.php">Déconnexion</a>
+      <?php else: ?>
+        <a href="/login.php">Connexion</a>
+      <?php endif ?>
+    </nav>
   </header>
   <main>
