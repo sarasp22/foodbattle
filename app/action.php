@@ -19,7 +19,7 @@ if (($_POST['action']??'')==='vote'){
   $score = filter_input(INPUT_POST, 'score', FILTER_VALIDATE_INT);
   $nick = trim($_POST['nickname'] ?? '');
   $comment = trim($_POST['comment'] ?? '');
-  if (!$score || $score < 1 || $score > 5 || $nick === '' || strlen($nick) > 240 || $comment === '' || strlen($comment) > 4000) {
+  if (!$score || $score < 1 || $score > 5 || $nick === '' || mb_strlen($nick, 'UTF-8') > 60 || $comment === '' || mb_strlen($comment, 'UTF-8') > 1000) {
     http_response_code(422);
     exit('Vérifie les champs de ton avis.');
   }
