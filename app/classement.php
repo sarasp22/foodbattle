@@ -3,19 +3,24 @@ $title = 'Classement';
 require 'includes/header.php';
 require 'includes/db.php';
 
+$orders = ['votes' => 'votes DESC, d.id', 'note' => 'average DESC NULLS LAST, d.id'];
+$tri = $_GET['tri'] ?? 'votes';
+if (!isset($orders[$tri])) { $tri = 'votes'; }
+
 $rows = $db->query('
     SELECT d.id, d.name, d.category, e.name AS restaurant,
            (SELECT COUNT(*) FROM votes WHERE dish_id = d.id) AS votes,
            (SELECT AVG(score) FROM ratings WHERE dish_id = d.id) AS average
     FROM dishes d
     JOIN establishments e ON e.id = d.establishment_id
-    ORDER BY votes DESC, d.id
+    ORDER BY '.$orders[$tri].'
     LIMIT 10
 ')->fetchAll();
 ?>
 
 <h1>Le top street food</h1>
-<p>Les 10 plats qui ont reçu le plus de votes. À toi de faire bouger le classement !</p>
+<p>Les 10 plats <?= $tri === 'note' ? 'les mieux notés' : 'qui ont reçu le plus de votes' ?>. À toi de faire bouger le classement !</p>
+<p>Trier par : <?= $tri === 'votes' ? '<strong>votes</strong>' : '<a href="/classement.php?tri=votes">votes</a>' ?> · <?= $tri === 'note' ? '<strong>note</strong>' : '<a href="/classement.php?tri=note">note</a>' ?></p>
 
 <table>
     <thead>
