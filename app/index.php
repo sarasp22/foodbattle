@@ -7,6 +7,23 @@ $q = trim($_GET['q'] ?? '');
 $cat = $_GET['categorie'] ?? '';
 $view = $_GET['view'] ?? '';
 
+// Récupération du Top 3 pour le podium (uniquement si pas de recherche active)
+$podium_dishes = [];
+if ($q === '' && $cat === '' && $view !== 'plats') {
+    $podium_stmt = $db->query("
+        SELECT d.*, e.name AS restaurant, e.city,
+               (SELECT AVG(score) FROM ratings WHERE dish_id=d.id AND status='published') AS average,
+               (SELECT COUNT(*) FROM ratings WHERE dish_id=d.id AND status='published') AS reviews_count,
+               (SELECT COUNT(*) FROM votes WHERE dish_id=d.id) AS votes
+        FROM dishes d
+        JOIN establishments e ON e.id=d.establishment_id
+        ORDER BY votes DESC, d.id ASC
+        LIMIT 3
+    ");
+    $podium_dishes = $podium_stmt->fetchAll();
+}
+
+// Requête principale pour la grille des plats
 $sql = "SELECT d.*, e.name AS restaurant, e.city,
     (SELECT AVG(score) FROM ratings WHERE dish_id=d.id AND status='published') AS average,
     (SELECT COUNT(*) FROM ratings WHERE dish_id=d.id AND status='published') AS reviews_count,
@@ -21,7 +38,7 @@ if ($q !== '') {
 }
 if (in_array($cat, ['burger', 'tacos', 'pizza'], true)) {
     $sql .= ' AND d.category = ?';
-    $params[] = $cat; 
+    $params[] = $cat;
 }
 $sql .= ' ORDER BY votes DESC, d.id ASC';
 $stmt = $db->prepare($sql);
@@ -52,6 +69,68 @@ $dishes = $stmt->fetchAll();
 </section>
 <?php endif; ?>
 
+<?php if (!empty($podium_dishes) && count($podium_dishes) === 3): ?>
+<section class="dish-section">
+    <div class="section-heading">
+        <h2><span class="heading-icon">🏆</span> Le Podium des 3 meilleurs plats</h2>
+        <a href="/classement.php" class="text-link">Voir le classement →</a>
+    </div>
+
+    <div class="podium-container">
+        <!-- 2ème position -->
+        <article class="podium-card">
+            <span class="podium-rank-badge">2</span>
+            <a class="podium-image-link" href="/plat.php?id=<?= $podium_dishes[1]['id'] ?>">
+                <img src="<?= h(image_for($podium_dishes[1]['category'])) ?>" alt="<?= h($podium_dishes[1]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
+                <span class="image-heart" aria-hidden="true">♥</span>
+            </a>
+            <div class="podium-body">
+                <h3><a href="/plat.php?id=<?= $podium_dishes[1]['id'] ?>"><?= h($podium_dishes[1]['name']) ?></a></h3>
+                <p class="restaurant-name"><?= h($podium_dishes[1]['restaurant']) ?></p>
+                <div class="dish-meta">
+                    <span class="rating"><span class="star">★</span> <?= number_format((float)$podium_dishes[1]['average'], 1, '.', '') ?></span>
+                </div>
+                <a class="vote-badge" href="/plat.php?id=<?= $podium_dishes[1]['id'] ?>">👍 <?= (int)$podium_dishes[1]['votes'] ?> votes</a>
+            </div>
+        </article>
+
+        <!-- 1ère position (Mise en avant / Surélevée) -->
+        <article class="podium-card first">
+            <span class="podium-rank-badge">1</span>
+            <a class="podium-image-link" href="/plat.php?id=<?= $podium_dishes[0]['id'] ?>">
+                <img src="<?= h(image_for($podium_dishes[0]['category'])) ?>" alt="<?= h($podium_dishes[0]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
+                <span class="image-heart" aria-hidden="true">♥</span>
+            </a>
+            <div class="podium-body">
+                <h3><a href="/plat.php?id=<?= $podium_dishes[0]['id'] ?>"><?= h($podium_dishes[0]['name']) ?></a></h3>
+                <p class="restaurant-name"><?= h($podium_dishes[0]['restaurant']) ?></p>
+                <div class="dish-meta">
+                    <span class="rating"><span class="star">★</span> <?= number_format((float)$podium_dishes[0]['average'], 1, '.', '') ?></span>
+                </div>
+                <a class="vote-badge" href="/plat.php?id=<?= $podium_dishes[0]['id'] ?>">👍 <?= (int)$podium_dishes[0]['votes'] ?> votes</a>
+            </div>
+        </article>
+
+        <!-- 3ème position -->
+        <article class="podium-card">
+            <span class="podium-rank-badge">3</span>
+            <a class="podium-image-link" href="/plat.php?id=<?= $podium_dishes[2]['id'] ?>">
+                <img src="<?= h(image_for($podium_dishes[2]['category'])) ?>" alt="<?= h($podium_dishes[2]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
+                <span class="image-heart" aria-hidden="true">♥</span>
+            </a>
+            <div class="podium-body">
+                <h3><a href="/plat.php?id=<?= $podium_dishes[2]['id'] ?>"><?= h($podium_dishes[2]['name']) ?></a></h3>
+                <p class="restaurant-name"><?= h($podium_dishes[2]['restaurant']) ?></p>
+                <div class="dish-meta">
+                    <span class="rating"><span class="star">★</span> <?= number_format((float)$podium_dishes[2]['average'], 1, '.', '') ?></span>
+                </div>
+                <a class="vote-badge" href="/plat.php?id=<?= $podium_dishes[2]['id'] ?>">👍 <?= (int)$podium_dishes[2]['votes'] ?> votes</a>
+            </div>
+        </article>
+    </div>
+</section>
+<?php endif; ?>
+
 <section class="dish-section" id="tous-les-plats">
     <?php if ($view === 'plats'): ?>
         <div class="section-heading">
@@ -70,8 +149,7 @@ $dishes = $stmt->fetchAll();
         </div>
     <?php else: ?>
         <div class="section-heading">
-            <h2><span class="heading-icon">👑</span> Top 10 des meilleurs plats</h2>
-            <a href="/classement.php" class="text-link">Voir le classement →</a>
+            <h2><span class="heading-icon">🍽️</span> Tous les autres plats</h2>
         </div>
     <?php endif; ?>
 
