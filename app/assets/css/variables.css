@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Variables globales et configuration de la typographie
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --orange: #ff8a00;
+    --orange-dark: #e96d16;
+    --red-accent: #a62626;
+    --yellow: #ffc928;
+    --yellow-light: #fff0b9;
+    --ink: #19152f;
+    --muted: #77778a;
+    --page: #f5f6fa;
+    --surface: #ffffff;
+    --line: #ececf2;
+    --sidebar-bg: #1e2235;
+    --shadow: 0 8px 24px rgba(35, 28, 64, 0.06);
+    --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Nunito', Arial, sans-serif;
+    color: var(--ink);
+    background: var(--page);
+    line-height: 1.5;
+}
+
+a { color: var(--orange-dark); text-decoration: none; }

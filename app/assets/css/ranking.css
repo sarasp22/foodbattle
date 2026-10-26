@@ -1,0 +1,81 @@
+/* ==========================================================================
+   Page de classement (Top des plats)
+   ========================================================================== */
+.ranking-wrapper {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--surface);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.toggle-tabs {
+    display: inline-flex;
+    background: var(--page);
+    padding: 4px;
+    border-radius: 12px;
+    margin: 14px 0 24px;
+}
+
+.toggle-tab {
+    padding: 9px 22px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--muted);
+}
+
+.toggle-tab.active {
+    background: var(--yellow);
+    color: var(--ink);
+}
+
+.ranking-list { display: flex; flex-direction: column; }
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--line);
+}
+
+.ranking-item:last-child { border-bottom: 0; }
+
+.rank-num {
+    width: 24px;
+    font-weight: 900;
+    color: var(--muted);
+    font-size: 14px;
+    text-align: center;
+}
+
+.rank-thumb {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.rank-info { flex: 1; }
+.rank-info h3 { margin: 0; font-size: 15px; font-weight: 900; }
+.rank-info h3 a { color: var(--ink); }
+.rank-info p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+
+.rank-votes {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    min-width: 80px;
+    text-align: right;
+}
+
+.rank-score {
+    font-size: 14px;
+    font-weight: 900;
+    min-width: 55px;
+    text-align: right;
+}
+
+.rank-score .star { color: var(--yellow); }
