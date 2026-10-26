@@ -18,33 +18,32 @@ $rows = $db->query('
 ')->fetchAll();
 ?>
 
-<h1>Le top street food</h1>
-<p>Les 10 plats <?= $tri === 'note' ? 'les mieux notés' : 'qui ont reçu le plus de votes' ?>. À toi de faire bouger le classement !</p>
-<p>Trier par : <?= $tri === 'votes' ? '<strong>votes</strong>' : '<a href="/classement.php?tri=votes">votes</a>' ?> · <?= $tri === 'note' ? '<strong>note</strong>' : '<a href="/classement.php?tri=note">note</a>' ?></p>
+<div class="ranking-wrapper">
+    <div class="section-heading" style="margin-bottom: 4px;">
+        <h2><span class="heading-icon">👑</span> Classement des 10 meilleurs plats</h2>
+    </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Rang</th>
-            <th>Plat</th>
-            <th>Établissement</th>
-            <th>Votes</th>
-            <th>Note /5</th>
-        </tr>
-    </thead>
-    <tbody>
+    <div class="toggle-tabs">
+        <a class="toggle-tab <?= $tri === 'votes' ? 'active' : '' ?>" href="/classement.php?tri=votes">Par nombre de votes</a>
+        <a class="toggle-tab <?= $tri === 'note' ? 'active' : '' ?>" href="/classement.php?tri=note">Par note moyenne</a>
+    </div>
+
+    <div class="ranking-list">
         <?php foreach ($rows as $i => $d): ?>
-            <tr>
-                <td>#<?= $i + 1 ?></td>
-                <td><a href="/plat.php?id=<?= $d['id'] ?>"><?= h($d['name']) ?></a></td>
-                <td><?= h($d['restaurant']) ?></td>
-                <td><?= $d['votes'] ?></td>
-                <td><?= $d['average'] !== null ? number_format((float)$d['average'], 1, ',', '') : '—' ?></td>
-            </tr>
+            <div class="ranking-item">
+                <span class="rank-num"><?= $i + 1 ?></span>
+                <img class="rank-thumb" src="<?= h(image_for($d['category'])) ?>" alt="<?= h($d['name']) ?>">
+                <div class="rank-info">
+                    <h3><a href="/plat.php?id=<?= $d['id'] ?>"><?= h($d['name']) ?></a></h3>
+                    <p><?= h($d['restaurant']) ?></p>
+                </div>
+                <div class="rank-votes"><?= (int)$d['votes'] ?> votes</div>
+                <div class="rank-score">
+                    <span class="star">★</span> <?= $d['average'] !== null ? number_format((float)$d['average'], 1, '.', '') : '—' ?>
+                </div>
+            </div>
         <?php endforeach ?>
-    </tbody>
-</table>
+    </div>
+</div>
 
-<?php
-require 'includes/footer.php';
-?>
+<?php require 'includes/footer.php'; ?>

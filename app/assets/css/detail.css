@@ -1,0 +1,189 @@
+/* ==========================================================================
+   Page de détail du plat et section des avis
+   ========================================================================== */
+.detail-container {
+    max-width: 660px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+}
+
+.detail-hero {
+    position: relative;
+    height: 320px;
+}
+
+.detail-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-back {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(25, 21, 47, 0.55);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    backdrop-filter: blur(4px);
+}
+
+.detail-back:hover { background: rgba(25, 21, 47, 0.8); color: #fff; }
+
+.detail-heart {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    color: #ef4259;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
+.detail-body { padding: 26px 30px 32px; }
+
+.detail-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.detail-title-row h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.price-pill {
+    padding: 6px 14px;
+    border-radius: 10px;
+    background: var(--page);
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.detail-info-line {
+    margin: 4px 0;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.detail-rating-line {
+    margin: 12px 0 16px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.detail-rating-line .star { color: var(--yellow); }
+.detail-rating-line span.muted { color: var(--muted); font-weight: 600; }
+
+.detail-desc {
+    color: #4a485c;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+/* Boîte de vote */
+.vote-box {
+    display: flex;
+    align-items: center;
+    background: var(--page);
+    border-radius: 14px;
+    padding: 6px;
+    margin-bottom: 28px;
+}
+
+.vote-box form { flex: 1; display: flex; }
+
+.vote-btn-main {
+    flex: 1;
+    padding: 13px 20px;
+    border-radius: 11px;
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 900;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.vote-box-count {
+    padding: 0 24px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+/* Liste des avis */
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.reviews-header h2 { font-size: 16px; font-weight: 900; margin: 0; }
+
+.review-card {
+    display: flex;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    margin-bottom: 12px;
+}
+
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1e2235;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.review-content { flex: 1; }
+
+.review-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.review-top strong { font-weight: 800; }
+.review-top .date { color: var(--muted); font-size: 11px; }
+.review-stars { color: var(--yellow); font-size: 12px; margin: 2px 0 6px; }
+.review-content p { margin: 0; font-size: 13px; color: #4a485c; }

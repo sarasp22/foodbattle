@@ -1,0 +1,285 @@
+/* ==========================================================================
+   Espace Administrateur, Dashboard et Page de connexion
+   ========================================================================== */
+.login-page {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: linear-gradient(180deg, #ffffff 0%, #fffdf7 75%, #fff3cc 100%);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 40px 36px 0;
+    box-shadow: var(--shadow);
+    text-align: center;
+    overflow: hidden;
+}
+
+.login-crown { font-size: 36px; color: var(--yellow); line-height: 1; }
+.login-logo { font-size: 28px; font-weight: 900; margin: 4px 0 18px; }
+.login-logo span { color: var(--orange); }
+.login-card h1 { font-size: 20px; font-weight: 900; margin: 0 0 8px; }
+.login-card p.sub { font-size: 13px; color: var(--muted); margin: 0 0 24px; }
+.login-card form { text-align: left; }
+.login-card label { font-size: 12px; font-weight: 800; margin-bottom: 6px; display: block; }
+.login-card input { width: 100%; margin-bottom: 16px; }
+
+.login-card .btn-full {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    background: var(--yellow);
+    font-weight: 900;
+    margin-bottom: 16px;
+}
+
+.back-home-link {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 24px;
+}
+
+.login-mascot-footer {
+    height: 95px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.login-mascot-footer img {
+    width: 220px;
+    height: 130px;
+    object-fit: cover;
+    object-position: top;
+}
+
+/* Layout de la zone Admin avec barre latérale fixe (Sticky) sur desktop */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background: var(--surface);
+}
+
+.admin-sidebar {
+    width: 240px;
+    background: var(--sidebar-bg);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    position: sticky;
+    top: 0;
+    height: 100vh; /* Reste fixe à l'écran sans nécessiter de défilement général */
+    flex-shrink: 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.admin-sidebar .logo {
+    color: #fff;
+    padding: 0 10px 26px;
+    font-size: 20px;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.admin-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    color: #a2a6b8;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all .2s;
+    white-space: nowrap;
+}
+
+.admin-nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
+
+.admin-nav a.active {
+    background: var(--yellow);
+    color: var(--ink);
+    font-weight: 900;
+}
+
+.admin-logout {
+    margin-top: auto; /* Fixe le bouton de déconnexion tout en bas de la sidebar */
+    padding: 11px 14px;
+    color: #a2a6b8;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 16px;
+}
+
+.admin-logout:hover { color: #fff; }
+
+.admin-content {
+    flex: 1;
+    padding: 36px 44px;
+    background: var(--surface);
+    overflow-x: auto;
+    min-width: 0;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.admin-header h1 { margin: 0; font-size: 26px; font-weight: 900; }
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+}
+
+.admin-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.td-dish {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.td-dish img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.td-dish strong { display: block; font-weight: 800; color: var(--ink); }
+.td-dish span { font-size: 12px; color: var(--muted); }
+
+.action-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-action {
+    background: transparent;
+    border: 0;
+    padding: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--ink);
+    border-radius: 6px;
+}
+
+.icon-action:hover { background: var(--page); }
+
+/* Transformation de la sidebar en menu horizontal supérieur sur mobile */
+@media (max-width: 768px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        padding: 10px 14px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .admin-sidebar .logo {
+        padding: 0;
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+    .admin-nav {
+        flex-direction: row;
+        gap: 4px;
+        flex: initial;
+        overflow-x: auto;
+        padding-bottom: 0;
+    }
+    .admin-nav::-webkit-scrollbar {
+        display: none;
+    }
+    .admin-nav a {
+        padding: 6px 10px;
+        font-size: 11px;
+        border-radius: 6px;
+    }
+    .admin-logout {
+        margin-top: 0;
+        padding: 6px 10px;
+        font-size: 11px;
+        border-top: 0;
+        background: rgba(255,255,255,0.08);
+        border-radius: 6px;
+    }
+    .admin-content {
+        padding: 20px 14px;
+    }
+    /* ==========================================================================
+       Actions dans les tableaux d'administration (Empilées verticalement)
+       ========================================================================== */
+    .action-icons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .icon-action {
+        background: transparent;
+        border: 0;
+        padding: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        color: var(--ink);
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .icon-action:hover { background: var(--page); }
+}

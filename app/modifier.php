@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $name = trim($_POST['name'] ?? '');
   $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
   if ($name !== '' && strlen($name) <= 120 && $price !== false && $price >= 0) {
-    $s=$db->prepare('UPDATE dishes SET name=?, price=? WHERE id=?');
-    $s->execute([$name,$price,$id]);
-    $saved=true;
-    $d['name']=$name;
-    $d['price']=$price;
+    $s = $db->prepare('UPDATE dishes SET name=?, price=? WHERE id=?');
+    $s->execute([$name, $price, $id]);
+    $saved = true;
+    $d['name'] = $name;
+    $d['price'] = $price;
   } else {
     $error = 'Vérifie le nom et le prix.';
   }
