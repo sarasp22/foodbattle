@@ -23,7 +23,9 @@ if (($_POST['action']??'')==='vote'){
     http_response_code(422);
     exit('Vérifie les champs de ton avis.');
   }
-  $s = $db->prepare("INSERT INTO ratings(dish_id,nickname,score,comment,status) VALUES(?,?,?,?,'published')");
+  $s = $db->prepare(
+    "INSERT INTO ratings(dish_id,nickname,score,comment,status) 
+    VALUES(?,?,?,?,'pending')");
   $s->execute([$id, $nick, $score, $comment]);
 } else {
   http_response_code(400);
