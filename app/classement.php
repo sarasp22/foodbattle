@@ -10,7 +10,7 @@ if (!isset($orders[$tri])) { $tri = 'votes'; }
 $rows = $db->query('
     SELECT d.id, d.name, d.category, e.name AS restaurant,
            (SELECT COUNT(*) FROM votes WHERE dish_id = d.id) AS votes,
-           (SELECT AVG(score) FROM ratings WHERE dish_id = d.id) AS average
+           (SELECT AVG(score) FROM ratings WHERE dish_id = d.id AND status = \'published\') AS average
     FROM dishes d
     JOIN establishments e ON e.id = d.establishment_id
     ORDER BY '.$orders[$tri].'
@@ -39,7 +39,7 @@ $rows = $db->query('
                 <td><a href="/plat.php?id=<?= $d['id'] ?>"><?= h($d['name']) ?></a></td>
                 <td><?= h($d['restaurant']) ?></td>
                 <td><?= $d['votes'] ?></td>
-                <td><?= number_format((float)$d['average'], 1, ',', '') ?></td>
+                <td><?= $d['average'] !== null ? number_format((float)$d['average'], 1, ',', '') : '—' ?></td>
             </tr>
         <?php endforeach ?>
     </tbody>
