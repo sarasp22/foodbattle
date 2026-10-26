@@ -1,15 +1,15 @@
 /* ==========================================================================
-   En-tête du site public (Header & Navigation)
+   En-tête du site public (Header & Navigation) - Entièrement responsive
    ========================================================================== */
 .site-header {
-    height: 70px;
-    padding: 0 max(4%, calc((100% - 1240px) / 2));
+    min-height: 70px;
+    padding: 12px max(4%, calc((100% - 1240px) / 2));
     background: var(--surface);
     border-bottom: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
+    gap: 16px;
     position: sticky;
     top: 0;
     z-index: 50;
@@ -19,6 +19,8 @@
     display: flex;
     align-items: center;
     gap: 36px;
+    flex: 1;
+    min-width: 0;
 }
 
 .logo {
@@ -29,6 +31,7 @@
     font-weight: 900;
     letter-spacing: -0.5px;
     color: var(--ink);
+    white-space: nowrap;
 }
 
 .logo img {
@@ -43,6 +46,11 @@
     display: flex;
     align-items: center;
     gap: 28px;
+    overflow-x: auto;
+}
+
+.main-nav::-webkit-scrollbar {
+    display: none; /* Masque la barre de défilement pour un design épuré */
 }
 
 .main-nav a {
@@ -50,6 +58,7 @@
     font-size: 14px;
     font-weight: 700;
     transition: color .2s;
+    white-space: nowrap;
 }
 
 .main-nav a:hover,
@@ -61,7 +70,8 @@
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
+    flex-shrink: 0;
 }
 
 .icon-btn {
@@ -83,4 +93,30 @@ main {
     margin: 28px auto 60px;
     padding: 0 24px;
     min-height: 70vh;
+}
+
+/* Adaptation mobile pour le header public */
+@media (max-width: 768px) {
+    .site-header {
+        padding: 10px 16px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+    .main-nav {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 20px;
+    }
+    .header-actions {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+    }
 }
