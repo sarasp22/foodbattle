@@ -258,29 +258,28 @@
     .admin-content {
         padding: 20px 14px;
     }
-}
+    /* ==========================================================================
+       Actions dans les tableaux d'administration (Empilées verticalement)
+       ========================================================================== */
+    .action-icons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
 
-/* ==========================================================================
-   Actions dans les tableaux d'administration (Empilées verticalement)
-   ========================================================================== */
-.action-icons {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-}
+    .icon-action {
+        background: transparent;
+        border: 0;
+        padding: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        color: var(--ink);
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.icon-action {
-    background: transparent;
-    border: 0;
-    padding: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    color: var(--ink);
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    .icon-action:hover { background: var(--page); }
 }
-
-.icon-action:hover { background: var(--page); }
