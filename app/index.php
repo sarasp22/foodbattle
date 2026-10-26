@@ -4,7 +4,7 @@ require 'includes/header.php';
 require 'includes/db.php';
 $q = trim($_GET['q'] ?? '');
 $cat = $_GET['categorie'] ?? '';
-$sql = "SELECT d.*, e.name AS restaurant, e.city, (SELECT AVG(score) FROM ratings WHERE dish_id=d.id) AS average, (SELECT COUNT(*) FROM votes WHERE dish_id=d.id) AS votes FROM dishes d JOIN establishments e ON e.id=d.establishment_id WHERE 1=1";
+$sql = "SELECT d.*, e.name AS restaurant, e.city, (SELECT AVG(score) FROM ratings WHERE dish_id=d.id AND status='published') AS average, (SELECT COUNT(*) FROM votes WHERE dish_id=d.id) AS votes FROM dishes d JOIN establishments e ON e.id=d.establishment_id WHERE 1=1";
 $params = [];
 if ($q !== '') {
   $sql .= ' AND d.name ILIKE ?';
