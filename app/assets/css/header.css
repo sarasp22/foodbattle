@@ -1,0 +1,122 @@
+/* ==========================================================================
+   En-tête du site public (Header & Navigation) - Entièrement responsive
+   ========================================================================== */
+.site-header {
+    min-height: 70px;
+    padding: 12px max(4%, calc((100% - 1240px) / 2));
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    flex: 1;
+    min-width: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.logo img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+}
+
+.logo span { color: var(--orange); }
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    overflow-x: auto;
+}
+
+.main-nav::-webkit-scrollbar {
+    display: none; /* Masque la barre de défilement pour un design épuré */
+}
+
+.main-nav a {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    transition: color .2s;
+    white-space: nowrap;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--ink);
+    font-weight: 800;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--ink);
+    background: transparent;
+    transition: background .2s;
+    font-size: 17px;
+}
+
+.icon-btn:hover { background: var(--page); color: var(--orange); }
+
+main {
+    max-width: 1240px;
+    margin: 28px auto 60px;
+    padding: 0 24px;
+    min-height: 70vh;
+}
+
+/* Adaptation mobile pour le header public */
+@media (max-width: 768px) {
+    .site-header {
+        padding: 10px 16px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+    .main-nav {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 20px;
+    }
+    .header-actions {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+    }
+}
