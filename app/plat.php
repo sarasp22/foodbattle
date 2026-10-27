@@ -80,7 +80,7 @@ $reviews = $s->fetchAll();
                 <div class="review-content">
                     <div class="review-top">
                         <strong><?= h($r['nickname']) ?></strong>
-                        <span class="date"><?= date('d M. Y', strtotime($r['created_at'])) ?></span>
+                        <span class="date"><?= h(format_date_fr($r['created_at'])) ?></span>
                     </div>
                     <div class="review-stars">
                         <?= str_repeat('★', (int)$r['score']) . str_repeat('☆', 5 - (int)$r['score']) ?>
