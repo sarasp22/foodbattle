@@ -4,8 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (empty($_SESSION['admin_logged_in'])) {
+if (($_SESSION['user_role'] ?? null) !== 'admin') {
     header('Location: /login.php');
     exit();
 }
-
