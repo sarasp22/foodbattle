@@ -117,21 +117,38 @@
     font-weight: 900;
 }
 
-.admin-logout {
-    margin-top: auto; /* Fixe le bouton de déconnexion tout en bas de la sidebar */
-    padding: 11px 14px;
+.admin-nav-title {
+    margin: 0 0 8px;
+    padding: 0 14px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
     color: #a2a6b8;
-    font-size: 13px;
-    font-weight: 700;
+}
+
+.admin-sidebar-footer {
+    margin-top: auto; /* Colle les liens en bas de la sidebar */
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-sidebar-footer a {
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    color: #a2a6b8;
+    font-size: 13px;
+    font-weight: 700;
     white-space: nowrap;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding-top: 16px;
 }
 
-.admin-logout:hover { color: #fff; }
+.admin-sidebar-footer a:hover { color: #fff; background: rgba(255,255,255,.06); }
 
 .admin-content {
     flex: 1;
@@ -247,13 +264,19 @@
         font-size: 11px;
         border-radius: 6px;
     }
-    .admin-logout {
+    .admin-nav-title { display: none; }
+    .admin-sidebar-footer {
         margin-top: 0;
+        flex-direction: row;
+        padding-top: 0;
+        border-top: 0;
+        gap: 4px;
+    }
+    .admin-sidebar-footer a {
         padding: 6px 10px;
         font-size: 11px;
-        border-top: 0;
-        background: rgba(255,255,255,0.08);
         border-radius: 6px;
+        background: rgba(255,255,255,0.08);
     }
     .admin-content {
         padding: 20px 14px;

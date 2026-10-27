@@ -14,18 +14,8 @@ $rows = $db->query("
 ?>
 
 <div class="admin-layout">
-    <aside class="admin-sidebar">
-        <a class="logo" href="/">
-            <img src="/assets/images/logo.png" alt="" onerror="this.style.display='none'">
-            <div>Food<span>Battle</span></div>
-        </a>
-        <nav class="admin-nav">
-            <a href="/">📊 Tableau de bord</a>
-            <a href="/dashboard.php">🍔 Plats</a>
-            <a href="/moderation.php" class="active">💬 Avis</a>
-        </nav>
-        <a class="admin-logout" href="/logout.php">🚪 Déconnexion</a>
-    </aside>
+
+  <?php $admin_active = 'plats'; require 'includes/admin_sidebar.php'; ?>
 
     <div class="admin-content">
         <div class="admin-header">

@@ -26,19 +26,8 @@ $items = $db->query('SELECT d.*, e.name AS restaurant FROM dishes d JOIN establi
 ?>
 
 <div class="admin-layout">
-    <aside class="admin-sidebar">
-        <a class="logo" href="/">
-            <img src="/assets/images/logo.png" alt="" onerror="this.style.display='none'">
-            <div>Food<span>Battle</span></div>
-        </a>
-        <nav class="admin-nav">
-            <a href="/">📊 Tableau de bord</a>
-            <a href="/dashboard.php" class="active">🍔 Plats</a>
-            <a href="/moderation.php">💬 Avis</a>
-            <a href="#etablissements">🏪 Établissements</a>
-        </nav>
-        <a class="admin-logout" href="/logout.php">🚪 Déconnexion</a>
-    </aside>
+
+  <?php $admin_active = 'plats'; require 'includes/admin_sidebar.php'; ?>
 
     <div class="admin-content">
         <div class="admin-header">
