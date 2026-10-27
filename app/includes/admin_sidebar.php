@@ -9,11 +9,11 @@ $admin_links = [
 ];
 ?>
 <aside class="admin-sidebar">
-    <a class="logo" href="/dashboard.php">
+    <a class="logo" href="/">
         <img src="/assets/images/logo.png" alt="" onerror="this.style.display='none'">
         <div>Food<span>Battle</span></div>
     </a>
-    <p class="admin-nav-title">Tableau de bord</p>
+    <div class="admin-nav-title">Tableau de bord</div>
     <nav class="admin-nav" aria-label="Administration">
         <?php foreach ($admin_links as $key => [$href, $label]): ?>
             <a href="<?= $href ?>"<?= $admin_active === $key ? ' class="active" aria-current="page"' : '' ?>><?= $label ?></a>
