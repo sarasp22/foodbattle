@@ -81,7 +81,7 @@ $dishes = $stmt->fetchAll();
         <article class="podium-card">
             <span class="podium-rank-badge">2</span>
             <a class="podium-image-link" href="/plat.php?id=<?= $podium_dishes[1]['id'] ?>">
-                <img src="<?= h(image_for($podium_dishes[1]['category'])) ?>" alt="<?= h($podium_dishes[1]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
+                <img src="<?= h(image_for($podium_dishes[1]['category'], $podium_dishes[1]['image_url'] ?? null)) ?>" alt="<?= h($podium_dishes[1]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                 <span class="image-heart" aria-hidden="true">♥</span>
             </a>
             <div class="podium-body">
@@ -98,7 +98,7 @@ $dishes = $stmt->fetchAll();
         <article class="podium-card first">
             <span class="podium-rank-badge">1</span>
             <a class="podium-image-link" href="/plat.php?id=<?= $podium_dishes[0]['id'] ?>">
-                <img src="<?= h(image_for($podium_dishes[0]['category'])) ?>" alt="<?= h($podium_dishes[0]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
+                <img src="<?= h(image_for($podium_dishes[0]['category'], $podium_dishes[0]['image_url'] ?? null)) ?>" alt="<?= h($podium_dishes[0]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                 <span class="image-heart" aria-hidden="true">♥</span>
             </a>
             <div class="podium-body">
@@ -115,7 +115,7 @@ $dishes = $stmt->fetchAll();
         <article class="podium-card">
             <span class="podium-rank-badge">3</span>
             <a class="podium-image-link" href="/plat.php?id=<?= $podium_dishes[2]['id'] ?>">
-                <img src="<?= h(image_for($podium_dishes[2]['category'])) ?>" alt="<?= h($podium_dishes[2]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
+               <img src="<?= h(image_for($podium_dishes[2]['category'], $podium_dishes[2]['image_url'] ?? null)) ?>" alt="<?= h($podium_dishes[2]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                 <span class="image-heart" aria-hidden="true">♥</span>
             </a>
             <div class="podium-body">
@@ -157,7 +157,7 @@ $dishes = $stmt->fetchAll();
         <?php foreach ($dishes as $d): ?>
             <article class="dish-card">
                 <a class="dish-image-link" href="/plat.php?id=<?= $d['id'] ?>">
-                    <img src="<?= h(image_for($d['category'])) ?>" alt="<?= h($d['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
+                    <img src="<?= h(image_for($d['category'], $d['image_url'] ?? null)) ?>" alt="<?= h($d['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                     <span class="image-heart" aria-hidden="true">♥</span>
                 </a>
                 <div class="cardbody">

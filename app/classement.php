@@ -8,7 +8,7 @@ $tri = $_GET['tri'] ?? 'votes';
 if (!isset($orders[$tri])) { $tri = 'votes'; }
 
 $rows = $db->query('
-    SELECT d.id, d.name, d.category, e.name AS restaurant,
+    SELECT d.id, d.name, d.category, d.image_url, e.name AS restaurant,
            (SELECT COUNT(*) FROM votes WHERE dish_id = d.id) AS votes,
            (SELECT AVG(score) FROM ratings WHERE dish_id = d.id AND status = \'published\') AS average
     FROM dishes d

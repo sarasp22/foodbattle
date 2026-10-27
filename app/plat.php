@@ -31,7 +31,7 @@ $reviews = $s->fetchAll();
 <div class="detail-container">
     <div class="detail-hero">
         <a href="/" class="detail-back" aria-label="Retour">←</a>
-        <img src="<?= h(image_for($d['category'])) ?>" alt="<?= h($d['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
+        <img src="<?= h(image_for($d['category'], $d['image_url'] ?? null)) ?>" alt="<?= h($d['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
         <span class="detail-heart">♥</span>
     </div>
 
