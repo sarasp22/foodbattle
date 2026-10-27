@@ -15,7 +15,7 @@ $rows = $db->query("
 
 <div class="admin-layout">
 
-  <?php $admin_active = 'plats'; require 'includes/admin_sidebar.php'; ?>
+  <?php $admin_active = 'avis'; require 'includes/admin_sidebar.php'; ?>
 
     <div class="admin-content">
         <div class="admin-header">
