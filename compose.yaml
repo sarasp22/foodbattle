@@ -10,13 +10,18 @@ services:
       DB_USER: ${DB_USER:?Copie .env.example vers .env}
       DB_PASSWORD: ${DB_PASSWORD:?Copie .env.example vers .env}
       ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH}
+      ADMIN_NICKNAME: ${ADMIN_NICKNAME}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
     volumes:
       - ./app:/var/www/html
+      - ./database:/var/www/database:ro
     depends_on:
       db:
         condition: service_healthy
   db:
     image: postgres:16-alpine
+    ports:
+      - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_DB: ${DB_NAME:?Copie .env.example vers .env}
       POSTGRES_USER: ${DB_USER:?Copie .env.example vers .env}

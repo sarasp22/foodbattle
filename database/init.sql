@@ -1,7 +1,44 @@
-CREATE TABLE establishments (id SERIAL PRIMARY KEY, name VARCHAR(120) NOT NULL, city VARCHAR(80) NOT NULL, address TEXT NOT NULL);
-CREATE TABLE dishes (id SERIAL PRIMARY KEY, establishment_id INTEGER NOT NULL REFERENCES establishments(id), name VARCHAR(120) NOT NULL, category VARCHAR(20) NOT NULL CHECK (category IN ('burger','tacos','pizza')), description TEXT NOT NULL DEFAULT '', price NUMERIC(8,2) NOT NULL CHECK (price >= 0));
-CREATE TABLE ratings (id SERIAL PRIMARY KEY, dish_id INTEGER NOT NULL REFERENCES dishes(id) ON DELETE CASCADE, nickname VARCHAR(60) NOT NULL, score INTEGER NOT NULL CHECK(score BETWEEN 1 AND 5), comment TEXT NOT NULL, status VARCHAR(20) NOT NULL DEFAULT 'published' CHECK (status IN ('pending','published','rejected')), created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
-CREATE TABLE votes (id SERIAL PRIMARY KEY, dish_id INTEGER NOT NULL REFERENCES dishes(id) ON DELETE CASCADE, visitor_key VARCHAR(128) NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE (dish_id, visitor_key));
+CREATE TABLE establishments (
+  id SERIAL PRIMARY KEY, 
+  name VARCHAR(120) NOT NULL, 
+  city VARCHAR(80) NOT NULL, 
+  address TEXT NOT NULL
+);
+CREATE TABLE dishes (
+  id SERIAL PRIMARY KEY, 
+  establishment_id INTEGER NOT NULL REFERENCES establishments(id), 
+  name VARCHAR(120) NOT NULL, 
+  category VARCHAR(20) NOT NULL 
+    CHECK (category IN ('burger','tacos','pizza')), 
+  description TEXT NOT NULL DEFAULT '', 
+  price NUMERIC(8,2) NOT NULL CHECK (price >= 0)
+);
+CREATE TABLE ratings (
+  id SERIAL PRIMARY KEY, 
+  dish_id INTEGER NOT NULL REFERENCES dishes(id) ON DELETE CASCADE, 
+  nickname VARCHAR(60) NOT NULL, 
+  score INTEGER NOT NULL CHECK(score BETWEEN 1 AND 5), 
+  comment TEXT NOT NULL, 
+  status VARCHAR(20) NOT NULL DEFAULT 'published' 
+    CHECK (status IN ('pending','published','rejected')), 
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE votes (
+  id SERIAL PRIMARY KEY, 
+  dish_id INTEGER NOT NULL REFERENCES dishes(id) ON DELETE CASCADE, 
+  visitor_key VARCHAR(128) NOT NULL, 
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+  UNIQUE (dish_id, visitor_key)
+);
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  nickname VARCHAR(60) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT 'user'
+    CHECK (role IN ('user', 'admin')),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 CREATE INDEX idx_dishes_establishment ON dishes(establishment_id);
 CREATE INDEX idx_ratings_dish_status ON ratings(dish_id, status);
 INSERT INTO establishments(name,city,address) VALUES
