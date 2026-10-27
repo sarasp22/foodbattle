@@ -11,11 +11,12 @@ Projet de reprise réalisé pour **PLAYGROUND** : le code a été commencé par 
 3. [Installation et lancement](#installation-et-lancement)
 4. [Commandes utiles](#commandes-utiles)
 5. [Structure du projet](#structure-du-projet)
-6. [Base de données](#base-de-données)
-7. [Sécurité](#sécurité)
-8. [Limites connues](#limites-connues)
-9. [Organisation du travail](#organisation-du-travail)
-10. [Dépannage](#dépannage)
+6. [Base de données et migrations](#base-de-données-et-migrations)
+7. [Création du compte administrateur initial](#création-du-compte-administrateur-initial)
+8. [Sécurité](#sécurité)
+9. [Limites connues](#limites-connues)
+10. [Organisation du travail](#organisation-du-travail)
+11. [Dépannage](#dépannage)
 
 ## Fonctionnalités
 
@@ -30,7 +31,7 @@ Projet de reprise réalisé pour **PLAYGROUND** : le code a été commencé par 
 **Espace d'administration** (connexion par mot de passe sur `/login.php`, lien « Déconnexion » dans le menu une fois connecté)
 
 - Liste des plats : consultation, ajout, modification (nom et prix), suppression
-- Modération des avis <!-- À COMPLÉTER après le merge de P6 : approuver / refuser -->
+- Modération des avis : approbation ou refus.
 
 ## Technologies
 
@@ -69,7 +70,9 @@ Ouvrir `.env` et renseigner les valeurs :
 |---|---|
 | `APP_PORT` | Port du site sur votre machine (8080 par défaut) |
 | `DB_NAME`, `DB_USER` | Nom et utilisateur de la base PostgreSQL |
-| `DB_PASSWORD` | Mot de passe de la base : **choisissez-en un vous-même** |
+| `DB_PASSWORD` | Mot de passe de la base : Mot de passe de l'utilisateur PostgreSQL |
+| `ADMIN_NICKNAME` | Pseudo du compte administrateur initial |
+| `ADMIN_EMAIL` | Adresse e-mail du compte administrateur initial |
 | `ADMIN_PASSWORD_HASH` | Empreinte (hash) du mot de passe administrateur |
 
 Le fichier `.env` est dans le `.gitignore` : il n'est jamais envoyé sur GitHub. Sans lui, `docker compose` s'arrête avec le message `Copie .env.example vers .env`.
@@ -104,7 +107,7 @@ Au premier lancement, la base est créée et remplie avec 12 plats fictifs, grâ
 |---|---|
 | Arrêter l'application | `docker compose down` |
 | Voir les logs (erreurs PHP, Apache) | `docker compose logs app` |
-| Reconstruire après un changement du `Dockerfile` | `docker compose build --no-cache` |
+| Reconstruire après un changement du `Dockerfile` | `docker compose build --no-cache` puis `docker compose up -d` |
 | Réinitialiser la base (⚠️ efface toutes les données) | `docker compose down -v` puis `docker compose up --build` |
 | Ouvrir la base en ligne de commande | `docker compose exec db psql -U <DB_USER> -d <DB_NAME>` |
 | Vérifier la version de PHP | `docker compose exec app php -v` |
@@ -115,27 +118,33 @@ Le script `database/init.sql` n'est exécuté que **lorsque la base est créée*
 
 ```
 .
-├── app/                    Code de l'application (monté dans le conteneur)
-│   ├── index.php           Liste des plats, recherche, filtre
-│   ├── plat.php            Détail d'un plat, vote, avis
-│   ├── classement.php      Classement des plats
-│   ├── action.php          Traitement des votes et des avis
-│   ├── login.php           Connexion administrateur
-│   ├── logout.php          Déconnexion
-│   ├── dashboard.php       Tableau de bord (liste, ajout)
-│   ├── modifier.php        Modification d'un plat
-│   ├── supprimer.php       Suppression d'un plat
-│   ├── moderation.php      Modération des avis
-│   ├── includes/           En-tête, pied de page, fonctions, connexion BDD, contrôle d'accès (auth.php)
-│   └── assets/             CSS, JavaScript, images
-├── database/init.sql       Schéma et données de test
-├── compose.yaml            Services Docker (app et db)
-├── Dockerfile              Image PHP 8.5 + Apache
-├── .env.example            Modèle des variables d'environnement
-└── LANCEMENT.txt           Rappel rapide de lancement
+├── app/
+│   ├── index.php
+│   ├── plat.php
+│   ├── classement.php
+│   ├── action.php
+│   ├── login.php
+│   ├── logout.php
+│   ├── dashboard.php
+│   ├── modifier.php
+│   ├── supprimer.php
+│   ├── moderation.php
+│   ├── includes/             En-tête, pied de page, fonctions, connexion BDD et contrôle d'accès
+│   └── assets/               CSS, JavaScript et images
+├── database/
+│   ├── init.sql              Schéma et données de démonstration pour une base vide
+│   ├── create-admin.php       Script CLI de création du compte administrateur initial
+│   └── migrations/
+│       ├── 000-create-migration-history.sql
+│       ├── 001-add-missing-constraints.sql
+│       └── 002-create-users-table.sql
+├── compose.yaml
+├── Dockerfile
+├── .env.example
+└── LANCEMENT.txt
 ```
 
-## Base de données
+## Base de données et migrations
 
 Quatre tables :
 
@@ -145,6 +154,40 @@ Quatre tables :
 | `dishes` | Plats (établissement, nom, catégorie, description, prix) |
 | `ratings` | Avis (plat, pseudo, note, commentaire, statut) |
 | `votes` | Votes (plat, clé du visiteur) |
+| `users` | Comptes utilisateurs (pseudo, e-mail, hash du mot de passe, rôle et date de création) |
+| `schema_migrations` | Registre des migrations appliquées |
+
+### Initialisation d'une base vide
+
+Lors du premier lancement, `database/init.sql` initialise une base vide.
+Il ne met pas à jour une base déjà créée.
+
+### Mise à jour d'une base locale existante
+
+Les migrations ne sont pas lancées automatiquement. Après avoir récupéré
+une branche qui ajoute ou modifie les migrations, chaque membre doit les
+appliquer à sa base PostgreSQL locale.
+
+**Ne réinitialisez pas votre base et ne supprimez pas le volume
+`foodbattle_data` pour appliquer ces migrations.**
+
+Dans votre outil SQL, sélectionnez la connexion PostgreSQL à la base
+`foodbattle`, puis exécutez les fichiers suivants dans l'ordre :
+
+1. `database/migrations/000-create-migration-history.sql`
+2. `database/migrations/001-add-missing-constraints.sql`
+3. `database/migrations/002-create-users-table.sql`
+
+Après exécution, vérifiez que `schema_migrations` contient les
+identifiants `001-add-missing-constraints` et `002-create-users-table`,
+puis vérifiez que la table `users` et ses contraintes existent.
+
+Le fichier `000-create-migration-history.sql` crée le registre des
+migrations ; il ne s'inscrit pas lui-même dans ce registre. Les
+migrations suivantes enregistrent leur identifiant après leur exécution.
+Même si les scripts prennent en compte certaines contraintes ou tables
+déjà présentes, exécutez-les dans l'ordre prévu et vérifiez leur
+résultat.
 
 Règles appliquées **par la base elle-même** :
 
@@ -154,7 +197,46 @@ Règles appliquées **par la base elle-même** :
 - `ratings.score` entre 1 et 5
 - `ratings.status` limité à `pending`, `published`, `rejected`
 - `votes` : contrainte `UNIQUE (dish_id, visitor_key)`, un seul vote par visiteur et par plat
+- Les adresses e-mail de `users` sont uniques.
+- Le rôle de `users` est limité à `user` ou `admin`.
 - Index sur les clés étrangères utilisées dans les recherches
+
+## Création du compte administrateur initial
+
+Le script `database/create-admin.php` permet de créer le compte
+administrateur initial dans la table `users`. Il doit être lancé
+manuellement en ligne de commande, après la création de la table et la
+configuration des variables d'environnement dans `.env`.
+
+Vérifiez que les variables suivantes sont renseignées dans `.env` :
+
+- `ADMIN_NICKNAME`
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD_HASH`
+
+Le hash est déjà configuré si vous avez correctement renseigné cette
+variable dans votre `.env`. Ne renseignez pas le mot de passe en clair à
+la place du hash.
+
+Depuis la racine du projet, lancez la commande :
+
+```bash
+docker compose exec app php /var/www/database/create-admin.php
+```
+
+Le script vérifie les variables, le format de l'adresse e-mail et la
+longueur du pseudo. Il refuse de créer un doublon : si un administrateur
+existe déjà à cette adresse, il signale que le compte existe ; si
+l'adresse appartient à un utilisateur non administrateur, il signale une
+erreur.
+
+Vérifiez ensuite dans la table `users` que le compte a été créé avec le
+rôle `admin`.
+
+**Important :** cette procédure crée le compte dans la table `users`. La
+connexion à l'espace d'administration existant reste basée sur
+`ADMIN_PASSWORD_HASH` tant que l'authentification n'a pas été adaptée
+pour rechercher les comptes dans `users`.
 
 ## Sécurité
 
@@ -175,6 +257,7 @@ Règles appliquées **par la base elle-même** :
 - **Historique Git** : l'ancien mot de passe de la base de développement reste visible dans les anciens commits. Il s'agit d'un prototype local avec des données fictives ; dans un projet réel, il serait considéré comme compromis et remplacé.
 - **Images** : les photos viennent d'un service externe (Pexels) et nécessitent une connexion Internet. Une image de secours s'affiche en cas d'échec. <!-- À METTRE À JOUR après P14 -->
 - **Duels** : le sujet mentionne des duels entre plats, mais ils sont **hors du périmètre du MVP** validé lors de la revue de projet.
+- **Authentification des comptes utilisateurs** : la table `users` et les rôles sont en place, mais la connexion à l'espace d'administration utilise encore ADMIN_PASSWORD_HASH` et n'authentifie pas les comptes de cette table.<!-- À METTRE À JOUR après P38 -->
 
 ## Organisation du travail
 
@@ -183,7 +266,7 @@ Règles appliquées **par la base elle-même** :
 - Une **Pull Request relue** par l'autre membre de l'équipe avant le merge, avec une description et des preuves (captures, logs)
 - Messages de commit courts, du type `Fix: ...`, `Feature: ...`, `Refactor: ...`
 
-Après le merge d'une Pull Request qui modifie `init.sql`, **chaque membre doit réinitialiser sa base** : `docker compose down -v` puis `docker compose up --build`.
+Après une Pull Request qui modifie le schéma de la base, consultez les migrations fournies et appliquez-les à votre base locale. **Ne réinitialisez pas votre base avec docker compose down -v` pour appliquer une migration**, sauf si vous souhaitez volontairement supprimer toutes les données locales.
 
 ## Dépannage
 
@@ -191,8 +274,11 @@ Après le merge d'une Pull Request qui modifie `init.sql`, **chaque membre doit 
 |---|---|
 | `Copie .env.example vers .env` au lancement | Le fichier `.env` est absent ou incomplet : le créer à partir de `.env.example` |
 | Page blanche | Erreur PHP : lire `docker compose logs app` |
+| Le compte administrateur n'est pas créé | Vérifiez que la table `users` existe et que `ADMIN_NICKNAME`, `ADMIN_EMAIL` et `ADMIN_PASSWORD_HASH` sont définis dans `.env` |
 | Connexion administrateur toujours refusée | Hash tronqué : vérifier les **apostrophes simples** dans `.env` (voir étape 3) |
+| La table `users` ou une contrainte manque | Vérifiez que les migrations ont été exécutées dans l'ordre et que leurs identifiants figurent dans               `schema_migrations` |
 | La base refuse la connexion après un changement de mot de passe | PostgreSQL ne lit `DB_PASSWORD` qu'à la création : `docker compose down -v` |
 | Une nouvelle règle de la base n'est pas appliquée | `init.sql` ne s'exécute qu'à la création : `docker compose down -v` |
 | Le port 8080 est déjà utilisé | Changer `APP_PORT` dans `.env` |
 | Avertissement `variable is not set` de Compose | Un `$` dans `.env` est interprété : utiliser des apostrophes simples |
+| L'outil SQL ne peut pas se connecter à PostgreSQL depuis l'ordinateur | Vérifiez que le port est publié dans `compose.yaml` avec `127.0.0.1:5432:5432`, puis recréez   les conteneurs sans supprimer le volume |
