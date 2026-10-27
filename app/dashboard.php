@@ -5,40 +5,29 @@ $hide_site_header = true;
 require 'includes/header.php';
 require 'includes/db.php';
 
-$restaurants = $db->query('SELECT * FROM establishments ORDER BY id')->fetchAll();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     check_post();
     $name = trim($_POST['name'] ?? '');
     $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
-    $eid = filter_input(INPUT_POST, 'establishment_id', FILTER_VALIDATE_INT);
     $category = $_POST['category'] ?? '';
     $description = trim($_POST['description'] ?? '');
-    if ($name !== '' && strlen($name) <= 120 && $price !== false && $price >= 0 && in_array($category, ['burger', 'tacos', 'pizza'], true) && in_array($eid, array_column($restaurants, 'id'))) {
-        $s = $db->prepare('INSERT INTO dishes(establishment_id,name,category,description,price) VALUES(?,?,?,?,?)');
-        $s->execute([$eid, $name, $category, $description, $price]);
+
+    if ($name !== '' && strlen($name) <= 120 && $price !== false && $price >= 0 && in_array($category, ['burger', 'tacos', 'pizza'], true)) {
+        $s = $db->prepare('INSERT INTO dishes(name, category, description, price) VALUES(?, ?, ?, ?)');
+        $s->execute([$name, $category, $description, $price]);
         header('Location: /dashboard.php?added=1');
         exit;
     } else {
         $error = 'Vérifie les champs du plat.';
     }
 }
-$items = $db->query('SELECT d.*, e.name AS restaurant FROM dishes d JOIN establishments e ON e.id=d.establishment_id ORDER BY d.id')->fetchAll();
+
+$items = $db->query('SELECT * FROM dishes ORDER BY id DESC')->fetchAll();
 ?>
 
 <div class="admin-layout">
-    <aside class="admin-sidebar">
-        <a class="logo" href="/">
-            <img src="/assets/images/logo.png" alt="" onerror="this.style.display='none'">
-            <div>Food<span>Battle</span></div>
-        </a>
-        <nav class="admin-nav">
-            <a href="/">📊 Tableau de bord</a>
-            <a href="/dashboard.php" class="active">🍔 Plats</a>
-            <a href="/moderation.php">💬 Avis</a>
-            <a href="#etablissements">🏪 Établissements</a>
-        </nav>
-        <a class="admin-logout" href="/logout.php">🚪 Déconnexion</a>
-    </aside>
+
+  <?php $admin_active = 'plats'; require 'includes/admin_sidebar.php'; ?>
 
     <div class="admin-content">
         <div class="admin-header">
@@ -55,13 +44,6 @@ $items = $db->query('SELECT d.*, e.name AS restaurant FROM dishes d JOIN establi
             <form method="post" style="max-width: 520px; margin-top: 14px;">
                 <input type="hidden" name="token" value="<?= csrf() ?>">
                 <label>Nom <input name="name" maxlength="120" required></label>
-                <label>Établissement
-                    <select name="establishment_id">
-                        <?php foreach ($restaurants as $e): ?>
-                            <option value="<?= $e['id'] ?>"><?= h($e['name']) ?></option>
-                        <?php endforeach ?>
-                    </select>
-                </label>
                 <label>Catégorie
                     <select name="category">
                         <option value="burger">Burger</option>
@@ -92,7 +74,6 @@ $items = $db->query('SELECT d.*, e.name AS restaurant FROM dishes d JOIN establi
                             <img src="<?= h(image_for($d['category'])) ?>" alt="">
                             <div>
                                 <strong><?= h($d['name']) ?></strong>
-                                <span><?= h($d['restaurant']) ?></span>
                             </div>
                         </div>
                     </td>
@@ -108,26 +89,6 @@ $items = $db->query('SELECT d.*, e.name AS restaurant FROM dishes d JOIN establi
                             </form>
                         </div>
                     </td>
-                </tr>
-                <?php endforeach ?>
-            </tbody>
-        </table>
-
-        <h2 id="etablissements" style="margin-top: 48px; font-size: 20px;">Les établissements</h2>
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Ville</th>
-                    <th>Adresse</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($restaurants as $e): ?>
-                <tr>
-                    <td><strong><?= h($e['name']) ?></strong></td>
-                    <td><?= h($e['city']) ?></td>
-                    <td><?= h($e['address']) ?></td>
                 </tr>
                 <?php endforeach ?>
             </tbody>
