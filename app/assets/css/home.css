@@ -199,11 +199,105 @@
 .podium-body h3 a { color: var(--ink); }
 
 @media (max-width: 768px) {
+    .intro {
+        padding: 16px;
+        min-height: auto;
+        margin-bottom: 20px;
+        border-radius: 16px;
+    }
+    .intro-content {
+        width: 100%;
+    }
+    .intro h1 {
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
+    .intro h1 br {
+        display: none;
+    }
+    .intro p {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+    .search-bar {
+        max-width: 100%;
+        padding: 4px 12px;
+    }
+    .search-bar input {
+        padding: 6px 0;
+        font-size: 13px;
+    }
+    .category-pills {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 10px;
+    }
+    .category-pill {
+        justify-content: center;
+        padding: 7px 4px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+    .hero-art {
+        display: none;
+    }
+
+    /* Podium sur 3 colonnes côte à côte comme sur la version web */
     .podium-container {
-        grid-template-columns: 1fr;
-        align-items: stretch;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        align-items: flex-end;
+        margin-top: 14px;
+        margin-bottom: 24px;
+    }
+    .podium-card {
+        border-radius: 12px;
     }
     .podium-card.first {
-        transform: none;
+        transform: translateY(-6px);
+    }
+    .podium-rank-badge {
+        top: 8px;
+        left: 8px;
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+    }
+    .podium-image-link {
+        padding: 6px 6px 0 6px;
+    }
+    .podium-image-link img {
+        height: 78px;
+        border-radius: 8px;
+    }
+    .podium-body {
+        padding: 8px;
+    }
+    .podium-body h3 {
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .podium-body .restaurant-name {
+        font-size: 10px;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .podium-body .dish-meta {
+        margin-bottom: 6px;
+        font-size: 11px;
+    }
+    .podium-body .vote-badge {
+        width: 100%;
+        justify-content: center;
+        padding: 4px 4px;
+        font-size: 10px;
+        box-sizing: border-box;
     }
 }
+
+

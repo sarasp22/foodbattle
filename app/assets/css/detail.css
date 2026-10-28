@@ -118,8 +118,7 @@
 
 .vote-box form { flex: 1; display: flex; }
 
-.vote-btn-main,
-.vote-p-main {
+.vote-btn-main {
     flex: 1;
     padding: 13px 20px;
     border-radius: 11px;
@@ -128,14 +127,11 @@
     font-size: 14px;
     font-weight: 900;
     border: 0;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-}
-
-.vote-btn-main {
-    cursor: pointer;
 }
 
 .vote-box-count {
@@ -191,3 +187,47 @@
 .review-top .date { color: var(--muted); font-size: 11px; }
 .review-stars { color: var(--yellow); font-size: 12px; margin: 2px 0 6px; }
 .review-content p { margin: 0; font-size: 13px; color: #4a485c; }
+
+/* Responsive mobile pour la page détail d'un plat */
+@media (max-width: 768px) {
+    .detail-container {
+        border-radius: 16px;
+    }
+    .detail-hero {
+        height: 200px;
+    }
+    .detail-body {
+        padding: 16px 14px 22px;
+    }
+    .detail-title-row {
+        gap: 10px;
+    }
+    .detail-title-row h1 {
+        font-size: 20px;
+    }
+    .price-pill {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+    .vote-box {
+        padding: 5px;
+    }
+    .vote-btn-main {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    .vote-box-count {
+        padding: 0 14px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    .review-card {
+        padding: 12px;
+        gap: 10px;
+    }
+    .avatar-circle {
+        width: 34px;
+        height: 34px;
+        font-size: 12px;
+    }
+}

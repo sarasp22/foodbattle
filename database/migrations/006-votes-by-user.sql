@@ -19,7 +19,10 @@ ALTER COLUMN visitor_key DROP NOT NULL;
 
 -- Supprime l'ancienne unicité basée sur visitor_key.
 ALTER TABLE votes
-DROP CONSTRAINT votes_dish_visitor_unique;
+DROP CONSTRAINT IF EXISTS votes_dish_visitor_unique;
+
+ALTER TABLE votes
+DROP CONSTRAINT IF EXISTS votes_dish_id_visitor_key_key;
 
 -- Un utilisateur ne peut voter qu'une fois pour un même plat.
 ALTER TABLE votes
