@@ -11,12 +11,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_FLOAT);
     $category = $_POST['category'] ?? '';
     $description = trim($_POST['description'] ?? '');
+    $establishment_id = filter_input(INPUT_POST, 'establishment_id', FILTER_VALIDATE_INT) ?: 1;
 
-    if ($name !== '' && strlen($name) <= 120 && $price !== false && $price >= 0 && in_array($category, ['burger', 'tacos', 'pizza'], true)) {
-        $s = $db->prepare('INSERT INTO dishes(name, category, description, price) VALUES(?, ?, ?, ?)');
-        $s->execute([$name, $category, $description, $price]);
-        header('Location: /dashboard.php?added=1');
-        exit;
+    if ($name !== '' && mb_strlen($name, 'UTF-8') <= 120 && $price !== false && $price >= 0 && in_array($category, ['burger', 'tacos', 'pizza'], true)) {
+        $upload_error = null;
+        $image_url = upload_to_cloudinary($_FILES['image'] ?? [], $upload_error);
+
+        if ($upload_error !== null) {
+            $error = $upload_error;
+        } else {
+            $s = $db->prepare('INSERT INTO dishes(establishment_id, name, category, description, price, image_url) VALUES(?, ?, ?, ?, ?, ?)');
+            $s->execute([$establishment_id, $name, $category, $description, $price, $image_url]);
+            header('Location: /dashboard.php?added=1');
+            exit;
+        }
     } else {
         $error = 'Vérifie les champs du plat.';
     }
@@ -41,7 +49,7 @@ $items = $db->query('SELECT * FROM dishes ORDER BY id DESC')->fetchAll();
 
         <details id="add-dish-box" class="admin-box">
             <summary>Nouveau plat</summary>
-            <form method="post" style="max-width: 520px; margin-top: 14px;">
+            <form method="post" enctype="multipart/form-data" style="max-width: 520px; margin-top: 14px;">
                 <input type="hidden" name="token" value="<?= csrf() ?>">
                 <label>Nom <input name="name" maxlength="120" required></label>
                 <label>Catégorie
@@ -52,6 +60,9 @@ $items = $db->query('SELECT * FROM dishes ORDER BY id DESC')->fetchAll();
                     </select>
                 </label>
                 <label>Prix (€) <input type="number" name="price" min="0" step="0.01" required></label>
+                <label>Photo (JPG, PNG, WebP - max 5 Mo)
+                    <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
+                </label>
                 <label>Description <textarea name="description"></textarea></label>
                 <button type="submit" style="margin-top: 12px;">Enregistrer le plat</button>
             </form>
@@ -71,7 +82,7 @@ $items = $db->query('SELECT * FROM dishes ORDER BY id DESC')->fetchAll();
                 <tr>
                     <td>
                         <div class="td-dish">
-                            <img src="<?= h(image_for($d['category'])) ?>" alt="">
+                            <img src="<?= h(image_for($d['category'], $d['image_url'] ?? null)) ?>" alt="">
                             <div>
                                 <strong><?= h($d['name']) ?></strong>
                             </div>

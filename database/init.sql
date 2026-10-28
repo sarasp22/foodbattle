@@ -11,7 +11,8 @@ CREATE TABLE dishes (
   category VARCHAR(20) NOT NULL
     CHECK (category IN ('burger','tacos','pizza')),
   description TEXT NOT NULL DEFAULT '',
-  price NUMERIC(8,2) NOT NULL CHECK (price >= 0)
+  price NUMERIC(8,2) NOT NULL CHECK (price >= 0),
+  image_url TEXT
 );
 CREATE TABLE ratings (
   id SERIAL PRIMARY KEY,
