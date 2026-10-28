@@ -123,3 +123,70 @@
     font-weight: 800;
     margin-top: auto;
 }
+
+/* Grille compacte à 2 colonnes sur mobile (style application) */
+@media (max-width: 768px) {
+    .section-heading {
+        margin-bottom: 12px;
+    }
+    .section-heading h2 {
+        font-size: 17px;
+    }
+    .heading-icon {
+        font-size: 17px;
+    }
+    .text-link {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    .cards,
+    .cards.grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+    .dish-card {
+        border-radius: 12px;
+    }
+    .dish-image-link {
+        padding: 6px 6px 0 6px;
+    }
+    .dish-image-link img {
+        height: 105px;
+        border-radius: 8px;
+    }
+    .image-heart {
+        top: 12px;
+        right: 12px;
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+    }
+    .cardbody {
+        padding: 8px 10px 10px;
+    }
+    .cardbody h3 {
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .restaurant-name {
+        font-size: 11px;
+        margin-bottom: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .dish-meta {
+        font-size: 11px;
+        margin-bottom: 8px;
+    }
+    .vote-badge {
+        width: 100%;
+        justify-content: center;
+        padding: 5px 6px;
+        font-size: 11px;
+        box-sizing: border-box;
+    }
+}
+
