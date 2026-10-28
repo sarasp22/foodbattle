@@ -10,12 +10,24 @@ if (!$s->fetch()) {
   http_response_code(404);
   exit('Plat introuvable.');
 }
-if (($_POST['action']??'')==='vote'){
-    $visitor=hash('sha256',session_id());
-    $s=$db->prepare('INSERT INTO votes(dish_id,visitor_key) VALUES(?,?) ON CONFLICT (dish_id,visitor_key) DO NOTHING');
-    $s->execute([$id,$visitor]);
-    if($s->rowCount()===0){header('Location: /plat.php?id='.$id.'&deja=1');exit;}
-}elseif (($_POST['action'] ?? '') === 'rate') {
+if (($_POST['action'] ?? '') === 'vote') {
+  // Le vote est réservé aux utilisateurs connectés.
+  if (empty($_SESSION['user_id'])) {
+    header('Location: /login.php');
+    exit;
+  }
+  $userId = (int) $_SESSION['user_id'];
+  $s = $db->prepare(
+    'INSERT INTO votes (dish_id, user_id)
+     VALUES (?, ?)
+     ON CONFLICT (user_id, dish_id) DO NOTHING'
+  );
+  $s->execute([$id, $userId]);
+  if ($s->rowCount() === 0) {
+    header('Location: /plat.php?id=' . $id . '&deja=1');
+    exit;
+  }
+} elseif (($_POST['action'] ?? '') === 'rate') {
   $score = filter_input(INPUT_POST, 'score', FILTER_VALIDATE_INT);
   $nick = trim($_POST['nickname'] ?? '');
   $comment = trim($_POST['comment'] ?? '');
@@ -25,7 +37,8 @@ if (($_POST['action']??'')==='vote'){
   }
   $s = $db->prepare(
     "INSERT INTO ratings(dish_id,nickname,score,comment,status) 
-    VALUES(?,?,?,?,'pending')");
+    VALUES(?,?,?,?,'pending')"
+  );
   $s->execute([$id, $nick, $score, $comment]);
 } else {
   http_response_code(400);

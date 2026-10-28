@@ -23,6 +23,18 @@ if (!$d) {
     exit;
 }
 
+$hasVoted = false;
+if (!empty($_SESSION['user_id'])) {
+    $s = $db->prepare(
+        'SELECT EXISTS (
+            SELECT 1 FROM votes
+            WHERE user_id = ? AND dish_id = ?
+        )'
+    );
+    $s->execute([$_SESSION['user_id'], $id]);
+    $hasVoted = (bool) $s->fetchColumn();
+}
+
 $s = $db->prepare("SELECT * FROM ratings WHERE dish_id=? AND status='published' ORDER BY id DESC");
 $s->execute([$id]);
 $reviews = $s->fetchAll();
@@ -32,7 +44,9 @@ $reviews = $s->fetchAll();
     <div class="detail-hero">
         <a href="/" class="detail-back" aria-label="Retour">←</a>
         <img src="<?= h(image_for($d['category'], $d['image_url'] ?? null)) ?>" alt="<?= h($d['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
-        <span class="detail-heart">♥</span>
+        <?php if ($hasVoted): ?>
+            <span class="detail-heart">♥</span>
+        <?php endif; ?>
     </div>
 
     <div class="detail-body">
@@ -59,12 +73,29 @@ $reviews = $s->fetchAll();
         <p class="detail-desc"><?= h($d['description']) ?></p>
 
         <div class="vote-box">
-            <form method="post" action="/action.php">
-                <input type="hidden" name="token" value="<?= csrf() ?>">
-                <input type="hidden" name="id" value="<?= $id ?>">
-                <button class="vote-btn-main" name="action" value="vote">👍 Voter pour ce plat</button>
-            </form>
-            <div class="vote-box-count"><?= (int)$d['votes'] ?> votes</div>
+            <?php if (!empty($_SESSION['user_id'])): ?>
+                <?php if ($hasVoted): ?>
+                    <p class="vote-p-main" role="status">
+                        ✔️ Vous avez voté pour ce plat.
+                    </p>
+                <?php else: ?>
+                    <form method="post" action="/action.php">
+                        <input type="hidden" name="token" value="<?= csrf() ?>">
+                        <input type="hidden" name="id" value="<?= $id ?>">
+                        <button class="vote-btn-main" name="action" value="vote">
+                            👍 Voter pour ce plat
+                        </button>
+                    </form>
+                <?php endif; ?>
+            <?php else: ?>
+                <p>
+                    <a href="/login.php">Connecte-toi</a> pour voter pour ce plat.
+                </p>
+            <?php endif; ?>
+
+            <div class="vote-box-count">
+                <?= (int) $d['votes'] ?> votes
+            </div>
         </div>
 
         <div class="reviews-header">
