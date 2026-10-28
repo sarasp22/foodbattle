@@ -54,8 +54,11 @@ $reviews = $s->fetchAll();
             <p class="message" role="status">Merci, ta contribution a été enregistrée.</p>
         <?php endif ?>
         <?php if (isset($_GET['deja'])): ?>
-            <p class="alert-error" role="alert">Tu as déjà voté pour ce plat.</p>
+            <p class="alert-error" role="alert">
+                Tu as déjà voté ou publié un avis pour ce plat, ou ton avis est en attente de modération.
+            </p>
         <?php endif ?>
+
 
         <div class="detail-title-row">
             <h1><?= h($d['name']) ?></h1>
@@ -128,6 +131,7 @@ $reviews = $s->fetchAll();
         <hr style="border:0; border-top:1px solid var(--line); margin: 28px 0;">
 
         <h2 id="form-avis" style="font-size: 17px; margin-bottom: 12px;">Ajouter un avis</h2>
+        <?php if (!empty($_SESSION['user_id'])): ?>
         <form method="post" action="/action.php">
             <input type="hidden" name="token" value="<?= csrf() ?>">
             <input type="hidden" name="id" value="<?= $id ?>">
@@ -143,6 +147,11 @@ $reviews = $s->fetchAll();
             <label>Commentaire <textarea name="comment" maxlength="1000" required></textarea></label>
             <button type="submit" style="margin-top: 10px;">Publier mon avis</button>
         </form>
+        <?php else: ?>
+            <p>
+                <a href="/login.php">Connecte-toi</a> pour publier un avis.
+            </p>
+        <?php endif; ?>
     </div>
 </div>
 

@@ -28,6 +28,12 @@ if (($_POST['action'] ?? '') === 'vote') {
     exit;
   }
 } elseif (($_POST['action'] ?? '') === 'rate') {
+    // Un avis est réservé aux utilisateurs connectés.
+  if (empty($_SESSION['user_id'])) {
+    header('Location: /login.php');
+    exit;
+  }
+  $userId = (int) $_SESSION['user_id'];
   $score = filter_input(INPUT_POST, 'score', FILTER_VALIDATE_INT);
   $nick = trim($_POST['nickname'] ?? '');
   $comment = trim($_POST['comment'] ?? '');
@@ -35,11 +41,23 @@ if (($_POST['action'] ?? '') === 'vote') {
     http_response_code(422);
     exit('Vérifie les champs de ton avis.');
   }
+    // Vérifie si l'utilisateur a déjà un avis actif pour ce plat.
   $s = $db->prepare(
-    "INSERT INTO ratings(dish_id,nickname,score,comment,status) 
-    VALUES(?,?,?,?,'pending')"
+    "SELECT id FROM ratings
+     WHERE user_id = ?
+       AND dish_id = ?
+       AND status IN ('pending', 'published')"
   );
-  $s->execute([$id, $nick, $score, $comment]);
+  $s->execute([$userId, $id]);
+  if ($s->fetch()) {
+    header('Location: /plat.php?id=' . $id . '&deja=1');
+    exit;
+  }
+  $s = $db->prepare(
+    "INSERT INTO ratings (dish_id, user_id, nickname, score, comment, status)
+    VALUES (?, ?, ?, ?, ?, 'pending')"
+  );
+  $s->execute([$id, $userId, $nick, $score, $comment]);
 } else {
   http_response_code(400);
   exit('Action inconnue.');
