@@ -225,3 +225,4 @@ INSERT INTO votes(dish_id,visitor_key) VALUES(12,'seed-12-6');
 INSERT INTO votes(dish_id,visitor_key) VALUES(12,'seed-12-7');
 INSERT INTO votes(dish_id,visitor_key) VALUES(12,'seed-12-8');
 INSERT INTO votes(dish_id,visitor_key) VALUES(12,'seed-12-9');
+UPDATE ratings SET created_at = CURRENT_TIMESTAMP - ((37 - id) * INTERVAL '1 day') WHERE id BETWEEN 1 AND 36;
