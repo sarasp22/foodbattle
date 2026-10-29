@@ -8,7 +8,6 @@ require_once __DIR__ . '/includes/functions.php';
 $title = 'Créer un compte';
 
 $errors = [];
-$success = '';
 
 $nickname = '';
 $email = '';
@@ -52,7 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
         $s = $db->prepare('INSERT INTO users(nickname, email, password_hash, role) VALUES(?,?,?,?)');
         $s->execute([$nickname, $email, $passwordHash, 'user']);
-        $success = 'Votre compte a été créé avec succès.';
+        $_SESSION['success_message'] = 'Votre compte a été créé avec succès.';
+        header('Location: /login.php');
+        exit();
       }
     } catch (PDOException $e) {
       $errors[] = 'Une erreur est survenue lors de la création de votre compte.';
@@ -78,13 +79,7 @@ require_once __DIR__ . '/includes/header.php'; ?>
         <?php endforeach; ?> 
       </div> 
     <?php endif; ?>
-    
-    <?php if ($success !== ''): ?> 
-      <p class="alert-success" role="status"> 
-        <?= h($success) ?> 
-      </p> 
-    <?php endif; ?> 
-    
+       
     <form method="post" action="inscription.php"> 
       <label for="nickname">Pseudo</label> 
       <input 

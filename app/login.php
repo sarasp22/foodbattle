@@ -4,6 +4,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+$success = $_SESSION['success_message'] ?? '';
+unset($_SESSION['success_message']);
+
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/db.php';
 
@@ -41,6 +44,11 @@ require_once __DIR__ . '/includes/header.php';
     <div class="login-card">
         <div class="login-crown">👑</div>
         <div class="login-logo">Food<span>Battle</span></div>
+        <?php if ($success !== ''): ?>
+            <p class="alert-success" role="status">
+                <?= h($success) ?>
+            </p>
+        <?php endif; ?>
         <h1>Connexion</h1>
         <p class="sub">Connectez-vous à votre compte FoodBattle</p>
 
