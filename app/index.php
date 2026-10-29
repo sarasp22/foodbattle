@@ -66,7 +66,6 @@ $dishes = $stmt->fetchAll();
 ?>
 
 <?php if ($view !== 'plats'): ?>
-    <?php if ($view !== 'plats'): ?>
     <section class="intro">
         <div class="intro-content">
             <h1>Les meilleurs <span class="highlight">plats</span><br> s’affrontent&nbsp;!</h1>
@@ -97,7 +96,6 @@ $dishes = $stmt->fetchAll();
         </div>
     </section>
 <?php endif; ?>
-<?php endif; ?>
 
 <?php if (!empty($podium_dishes) && count($podium_dishes) === 3): ?>
     <section class="dish-section">
@@ -113,7 +111,8 @@ $dishes = $stmt->fetchAll();
                     <img src="<?= h(image_for($podium_dishes[1]['category'], $podium_dishes[1]['image_url'] ?? null)) ?>" alt="<?= h($podium_dishes[1]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                     <?php if (!empty($podium_dishes[1]['has_voted'])): ?>
                         <span class="detail-heart">♥</span>
-                    <?php endif; ?>                </a>
+                    <?php endif; ?>
+                </a>
                 <div class="podium-body">
                     <h3><a href="/plat.php?id=<?= $podium_dishes[1]['id'] ?>"><?= h($podium_dishes[1]['name']) ?></a></h3>
                     <p class="restaurant-name"><?= h($podium_dishes[1]['restaurant']) ?></p>

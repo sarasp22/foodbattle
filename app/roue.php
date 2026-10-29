@@ -273,7 +273,7 @@ function roue_filter_url(string $targetCat, string $currentVille): string {
                     var list = raw ? JSON.parse(raw) : [];
                     list = list.filter(function (item) { return item.id !== dish.id; });
                     list.unshift(dish);
-                    list = list.slice(0, 5);
+                    list = list.slice(0, 4);
                     sessionStorage.setItem('fb_roue_history', JSON.stringify(list));
                     renderHistory(list);
                 } catch (e) {}
