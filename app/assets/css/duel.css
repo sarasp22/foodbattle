@@ -96,6 +96,11 @@
     font-weight: 900;
 }
 
+.duel-login-btn {
+    display: flex;
+    justify-content: center;
+}
+
 .duel-vs-badge {
     align-self: center;
     width: 56px;

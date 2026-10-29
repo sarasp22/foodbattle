@@ -8,11 +8,15 @@ if (!in_array($cat, ['burger', 'tacos', 'pizza'], true)) {
     $cat = '';
 }
 
-$visitor = hash('sha256', session_id());
+$userId = $_SESSION['user_id'] ?? null;
 
 // Traitement du vote lorsqu'un utilisateur choisit un plat du duel
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     check_post();
+    if (empty($_SESSION['user_id'])) {
+        header('Location: /login.php');
+        exit;
+    }
     $winner_id = filter_input(INPUT_POST, 'winner_id', FILTER_VALIDATE_INT);
 
     $check = $db->prepare('SELECT id FROM dishes WHERE id = ?');
@@ -22,8 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit('Plat introuvable.');
     }
 
-    $insert = $db->prepare('INSERT INTO votes(dish_id, visitor_key) VALUES(?, ?) ON CONFLICT (dish_id, visitor_key) DO NOTHING');
-    $insert->execute([$winner_id, $visitor]);
+    $userId = (int) $_SESSION['user_id'];
+
+    $insert = $db->prepare(
+        'INSERT INTO votes (dish_id, user_id)
+        VALUES (?, ?)
+        ON CONFLICT (user_id, dish_id) DO NOTHING'
+    );
+    $insert->execute([$winner_id, $userId]);
+
+    if ($insert->rowCount() === 0) {
+        $redirect = '/duel.php?deja=1' . ($cat !== '' ? '&categorie=' . urlencode($cat) : '');
+        header('Location: ' . $redirect);
+        exit;
+    }
 
     $redirect = '/duel.php?voted=' . $winner_id . ($cat !== '' ? '&categorie=' . urlencode($cat) : '');
     header('Location: ' . $redirect);
@@ -46,11 +62,18 @@ $sql = "
            (SELECT COUNT(*) FROM votes WHERE dish_id = d.id) AS votes
     FROM dishes d
     JOIN establishments e ON e.id = d.establishment_id
-    WHERE NOT EXISTS (
-        SELECT 1 FROM votes v WHERE v.dish_id = d.id AND v.visitor_key = ?
-    )
+    WHERE 1=1
 ";
-$params = [$visitor];
+
+$params = [];
+
+if ($userId !== null) {
+    $sql .= ' AND NOT EXISTS (
+        SELECT 1 FROM votes v
+        WHERE v.dish_id = d.id AND v.user_id = ?
+    )';
+    $params[] = $userId;
+}
 
 if ($cat !== '') {
     $sql .= ' AND d.category = ?';
@@ -98,11 +121,15 @@ $pair = $stmt->fetchAll();
                             <span class="rating"><span class="star">★</span> <?= $d['average'] !== null ? number_format((float)$d['average'], 1, '.', '') : '—' ?></span>
                             <span class="vote-badge">👍 <?= (int)$d['votes'] ?> votes</span>
                         </div>
-                        <form method="post" action="/duel.php<?= $cat !== '' ? '?categorie=' . h($cat) : '' ?>">
-                            <input type="hidden" name="token" value="<?= h(csrf()) ?>">
-                            <input type="hidden" name="winner_id" value="<?= (int)$d['id'] ?>">
-                            <button type="submit" class="duel-vote-btn">⚡ Je choisis ce plat !</button>
-                        </form>
+                        <?php if ($userId !== null): ?>
+                            <form method="post" action="/duel.php<?= $cat !== '' ? '?categorie=' . h($cat) : '' ?>">
+                                <input type="hidden" name="token" value="<?= h(csrf()) ?>">
+                                <input type="hidden" name="winner_id" value="<?= (int)$d['id'] ?>">
+                                <button type="submit" class="duel-vote-btn">⚡ Je choisis ce plat !</button>
+                            </form>
+                        <?php else: ?>
+                            <a href="/login.php" class="duel-vote-btn duel-login-btn">👉🏾 Connecte-toi pour choisir ce plat</a>
+                        <?php endif; ?>
                     </div>
                 </article>
                 <?php if ($i === 0): ?>
