@@ -1,0 +1,673 @@
+/* ==========================================================================
+   Bouton d'appel à l'action « Je ne sais pas quoi manger ! » sur l'accueil
+   ========================================================================== */
+.intro-roue-center {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding: 0 8px;
+}
+
+.roue-cta-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 18px 26px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #19152f 0%, #2d2654 100%);
+    color: #fff;
+    border: 3px solid var(--yellow);
+    box-shadow: 0 12px 28px rgba(25, 21, 47, 0.25), 0 0 0 5px rgba(255, 201, 40, 0.25);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    max-width: 240px;
+}
+
+.roue-cta-home:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 16px 34px rgba(25, 21, 47, 0.32), 0 0 0 7px rgba(255, 201, 40, 0.38);
+    color: #fff;
+}
+
+.roue-cta-icon {
+    font-size: 32px;
+    line-height: 1;
+    display: inline-block;
+    animation: rouePulse 2s infinite ease-in-out;
+}
+
+.roue-cta-title {
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.25;
+    color: #fff;
+}
+
+.roue-cta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 900;
+}
+
+@keyframes rouePulse {
+    0%, 100% { transform: rotate(-6deg) scale(1); }
+    50% { transform: rotate(6deg) scale(1.12); }
+}
+
+/* ==========================================================================
+   Page « La Roue du Destin » (roue.php) — Format compact & mobile-friendly
+   ========================================================================== */
+.roue-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 4px 0 32px;
+}
+
+.roue-hero-banner {
+    background: linear-gradient(135deg, #fffdf7 0%, #fff3cc 100%);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 18px 22px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+}
+
+.roue-hero-banner h1 {
+    font-size: 24px;
+    font-weight: 900;
+    margin: 0 0 6px;
+    color: var(--ink);
+}
+
+.roue-hero-banner p {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 auto 14px;
+    max-width: 560px;
+}
+
+.roue-filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.roue-city-select-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 4px 12px;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.roue-city-select-group label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.roue-city-select-group select {
+    margin: 0;
+    padding: 4px 8px;
+    border: 0;
+    background: transparent;
+    font-weight: 800;
+    font-size: 12px;
+    color: var(--ink);
+    cursor: pointer;
+    width: auto;
+}
+
+.roue-controls-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.roue-sound-btn {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 999px;
+}
+
+/* Grille équilibrée 2 colonnes compacte */
+.roue-stage {
+    display: grid;
+    grid-template-columns: 310px 1fr;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.roue-left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.roue-wheel-box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+.wheel-container {
+    position: relative;
+    width: 175px;
+    height: 175px;
+    margin: 0 auto 14px;
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    z-index: 5;
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,0.2));
+}
+
+.wheel-disc {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 6px solid var(--ink);
+    background: conic-gradient(
+        #ffbe0b 0deg 60deg,
+        #fb5607 60deg 120deg,
+        #ff006e 120deg 180deg,
+        #8338ec 180deg 240deg,
+        #3a86ff 240deg 300deg,
+        #06d6a0 300deg 360deg
+    );
+    box-shadow: inset 0 0 16px rgba(0,0,0,0.18), 0 6px 18px rgba(0,0,0,0.12);
+    transition: transform 2.6s cubic-bezier(0.15, 0.85, 0.25, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.wheel-center-hub {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.roue-spin-btn {
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 13px;
+    font-weight: 900;
+    border-radius: 10px;
+    background: var(--yellow);
+    color: var(--ink);
+    box-shadow: 0 4px 12px rgba(255, 190, 11, 0.3);
+}
+
+.roue-spin-btn:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.roue-slot-ticker {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--orange-dark, #d94e0f);
+    min-height: 18px;
+}
+
+/* Historique limité aux 4 derniers plats */
+.roue-history-section {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.roue-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.roue-history-header h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.roue-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.roue-history-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    background: var(--page);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 0.15s, border-color 0.15s;
+}
+
+.roue-history-item:hover {
+    transform: translateX(3px);
+    border-color: var(--yellow);
+}
+
+.roue-history-item img {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.roue-history-item div {
+    min-width: 0;
+}
+
+.roue-history-item strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.roue-history-item span {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Colonne droite : Carte compacte du plat + Carte Google Maps */
+.roue-result-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.roue-winner-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 185px 1fr;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.roue-winner-card.is-spinning {
+    opacity: 0.6;
+    transform: scale(0.99);
+}
+
+.roue-winner-media {
+    position: relative;
+    padding: 10px 0 10px 10px;
+    display: block;
+}
+
+.roue-winner-media img {
+    width: 100%;
+    height: 165px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+.roue-winner-badge {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    background: rgba(25, 21, 47, 0.85);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.roue-winner-body {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.roue-winner-kicker {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 900;
+    color: #d94e0f;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+}
+
+.roue-winner-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.roue-winner-title-row h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.roue-winner-body .detail-info-line {
+    margin: 2px 0;
+    font-size: 12px;
+}
+
+.roue-winner-desc {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.45;
+    margin: 6px 0 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.roue-winner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.roue-winner-actions .button {
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: 10px;
+}
+
+/* Carte Google Maps avec Pin Jaune personnalisé */
+.roue-map-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.roue-map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.roue-map-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.roue-map-address {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.roue-map-container {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 225px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid var(--yellow);
+}
+
+.roue-map-frame {
+    width: 100%;
+    height: 100%;
+    min-height: 225px;
+    border: 0;
+    display: block;
+    background: var(--page);
+}
+
+/* Pin Jaune FoodBattle au centre de la carte */
+.roue-yellow-pin-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    pointer-events: none;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.yellow-pin-label {
+    background: var(--ink);
+    color: var(--yellow);
+    font-size: 11px;
+    font-weight: 900;
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+    margin-bottom: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    border: 1.5px solid var(--yellow);
+}
+
+.yellow-pin-marker {
+    width: 38px;
+    height: 38px;
+    background: var(--yellow);
+    border: 3px solid var(--ink);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    animation: pinBounce 1.8s infinite ease-in-out;
+}
+
+.yellow-pin-marker span {
+    transform: rotate(45deg);
+    font-size: 16px;
+    line-height: 1;
+}
+
+.yellow-pin-pulse {
+    width: 20px;
+    height: 7px;
+    background: rgba(255, 201, 40, 0.55);
+    border-radius: 50%;
+    margin-top: 2px;
+    animation: pinPulseShadow 1.8s infinite ease-in-out;
+}
+
+@keyframes pinBounce {
+    0%, 100% { transform: rotate(-45deg) translate(0, 0); }
+    50% { transform: rotate(-45deg) translate(4px, -4px); }
+}
+
+@keyframes pinPulseShadow {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.4); opacity: 0.35; }
+}
+
+@media (max-width: 960px) {
+    .intro {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .intro-roue-center {
+        margin: 12px 0;
+    }
+    .roue-stage {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Format Mobile App compact (comme les autres sections) */
+@media (max-width: 768px) {
+    .roue-cta-home {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px 16px;
+    }
+    .roue-hero-banner {
+        padding: 14px 12px;
+        border-radius: 14px;
+        margin-bottom: 12px;
+    }
+    .roue-hero-banner h1 {
+        font-size: 19px;
+    }
+    .roue-hero-banner p {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+    .roue-wheel-box,
+    .roue-history-section,
+    .roue-winner-card,
+    .roue-map-card {
+        border-radius: 12px;
+        padding: 12px;
+    }
+    .wheel-container {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 10px;
+    }
+    .wheel-center-hub {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+    .roue-winner-card {
+        grid-template-columns: 110px 1fr;
+        padding: 0;
+        align-items: center;
+    }
+    .roue-winner-media {
+        padding: 8px 0 8px 8px;
+    }
+    .roue-winner-media img {
+        height: 115px;
+        border-radius: 8px;
+    }
+    .roue-winner-badge {
+        top: 12px;
+        left: 12px;
+        padding: 2px 7px;
+        font-size: 9px;
+    }
+    .roue-winner-body {
+        padding: 10px 12px;
+    }
+    .roue-winner-title-row h2 {
+        font-size: 15px;
+    }
+    .roue-winner-desc {
+        font-size: 11px;
+        margin: 4px 0 6px;
+    }
+    .roue-winner-actions .button {
+        width: 100%;
+        text-align: center;
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    .roue-history-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+    .roue-history-item {
+        padding: 6px 8px;
+        gap: 8px;
+    }
+    .roue-history-item img {
+        width: 30px;
+        height: 30px;
+    }
+    .roue-history-item strong {
+        font-size: 11px;
+    }
+    .roue-history-item span {
+        font-size: 10px;
+    }
+    .roue-map-container,
+    .roue-map-frame {
+        min-height: 190px;
+    }
+}
+
