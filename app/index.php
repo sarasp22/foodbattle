@@ -66,6 +66,7 @@ $dishes = $stmt->fetchAll();
 ?>
 
 <?php if ($view !== 'plats'): ?>
+    <?php if ($view !== 'plats'): ?>
     <section class="intro">
         <div class="intro-content">
             <h1>Les meilleurs <span class="highlight">plats</span><br> s’affrontent&nbsp;!</h1>
@@ -82,17 +83,26 @@ $dishes = $stmt->fetchAll();
                 <a class="category-pill <?= $cat === 'pizza' ? 'active' : '' ?>" href="/?categorie=pizza">🍕 Pizzas</a>
             </div>
         </div>
+
+        <div class="intro-roue-center">
+            <a class="roue-cta-home" href="/roue.php">
+                <span class="roue-cta-icon" aria-hidden="true">🎰</span>
+                <span class="roue-cta-title">Je ne sais pas<br>quoi manger !</span>
+                <span class="roue-cta-badge">Lancer la Roue →</span>
+            </a>
+        </div>
+
         <div class="hero-art" aria-hidden="true">
             <img class="mascot-logo" src="/assets/images/logo.png" alt="Mascotte FoodBattle">
         </div>
     </section>
+<?php endif; ?>
 <?php endif; ?>
 
 <?php if (!empty($podium_dishes) && count($podium_dishes) === 3): ?>
     <section class="dish-section">
         <div class="section-heading">
             <h2><span class="heading-icon">🏆</span> Le Podium des 3 meilleurs plats</h2>
-            <a href="/classement.php" class="text-link">Voir le classement →</a>
         </div>
 
         <div class="podium-container">
@@ -121,7 +131,7 @@ $dishes = $stmt->fetchAll();
                     <img src="<?= h(image_for($podium_dishes[0]['category'], $podium_dishes[0]['image_url'] ?? null)) ?>" alt="<?= h($podium_dishes[0]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                     <?php if (!empty($podium_dishes[0]['has_voted'])): ?>
                         <span class="detail-heart">♥</span>
-                    <?php endif; ?>                
+                    <?php endif; ?>
                 </a>
                 <div class="podium-body">
                     <h3><a href="/plat.php?id=<?= $podium_dishes[0]['id'] ?>"><?= h($podium_dishes[0]['name']) ?></a></h3>
@@ -140,7 +150,7 @@ $dishes = $stmt->fetchAll();
                     <img src="<?= h(image_for($podium_dishes[2]['category'], $podium_dishes[2]['image_url'] ?? null)) ?>" alt="<?= h($podium_dishes[2]['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                     <?php if (!empty($podium_dishes[2]['has_voted'])): ?>
                         <span class="detail-heart">♥</span>
-                    <?php endif; ?>                
+                    <?php endif; ?>
                 </a>
                 <div class="podium-body">
                     <h3><a href="/plat.php?id=<?= $podium_dishes[2]['id'] ?>"><?= h($podium_dishes[2]['name']) ?></a></h3>
@@ -184,7 +194,7 @@ $dishes = $stmt->fetchAll();
                     <img src="<?= h(image_for($d['category'], $d['image_url'] ?? null)) ?>" alt="<?= h($d['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                     <?php if (!empty($d['has_voted'])): ?>
                         <span class="detail-heart">♥</span>
-                    <?php endif; ?>                
+                    <?php endif; ?>
                 </a>
                 <div class="cardbody">
                     <h3><a href="/plat.php?id=<?= $d['id'] ?>"><?= h($d['name']) ?></a></h3>

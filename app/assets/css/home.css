@@ -102,17 +102,18 @@
 /* Illustration de la mascotte */
 .hero-art {
     position: relative;
-    flex: 0 0 380px;
-    height: 240px;
+    flex: 0 0 340px;
+    height: 290px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .hero-art img.mascot-logo {
-    max-height: 250px;
+    max-height: 315px;
     width: auto;
-    filter: drop-shadow(0 12px 20px rgba(119,72,12,.15));
+    transform: scale(1.12);
+    filter: drop-shadow(0 14px 24px rgba(119,72,12,.18));
 }
 
 /* ==========================================================================
@@ -299,5 +300,3 @@
         box-sizing: border-box;
     }
 }
-
-
