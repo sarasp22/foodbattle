@@ -12,7 +12,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title><?= h($title ?? 'FoodBattle') ?> · FoodBattle</title>
   <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/css/header.css">
   <link rel="stylesheet" href="/assets/css/duel.css">
+  <link rel="stylesheet" href="/assets/css/roue.css">
 </head>
 
 <body>
@@ -27,6 +29,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <a href="/" class="<?= ($current_page === 'index.php' && empty($_GET['view'])) ? 'active' : '' ?>">Accueil</a>
           <a href="/?view=plats#tous-les-plats" class="<?= (!empty($_GET['view']) && $_GET['view'] === 'plats') ? 'active' : '' ?>">Plats</a>
           <a href="/duel.php" class="<?= $current_page === 'duel.php' ? 'active' : '' ?>">⚔️ Duel</a>
+          <a href="/roue.php" class="<?= $current_page === 'roue.php' ? 'active' : '' ?>">🎰 Roue du Destin</a>
           <a href="/classement.php" class="<?= $current_page === 'classement.php' ? 'active' : '' ?>">Classement</a>
         </nav>
       </div>
@@ -42,7 +45,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <a href="/login.php">Connexion</a>
           <a href="/inscription.php">Inscription</a>
         <?php endif ?>
+        <button type="button" class="mobile-menu-toggle" aria-expanded="false" aria-label="Menu" onclick="var h=this.closest('.site-header');h.classList.toggle('nav-open');this.setAttribute('aria-expanded',h.classList.contains('nav-open'));">☰ Menu</button>
       </div>
     </header>
     <main>
-    <?php endif; ?>
+  <?php endif; ?>

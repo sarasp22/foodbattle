@@ -32,7 +32,7 @@ $rows = $db->query('
         <?php foreach ($rows as $i => $d): ?>
             <div class="ranking-item">
                 <span class="rank-num"><?= $i + 1 ?></span>
-                <img class="rank-thumb" src="<?= h(image_for($d['category'])) ?>" alt="<?= h($d['name']) ?>">
+                <img class="rank-thumb" src="<?= h(image_for($d['category'], $d['image_url'] ?? null)) ?>" alt="<?= h($d['name']) ?>" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'">
                 <div class="rank-info">
                     <h3><a href="/plat.php?id=<?= $d['id'] ?>"><?= h($d['name']) ?></a></h3>
                     <p><?= h($d['restaurant']) ?></p>
