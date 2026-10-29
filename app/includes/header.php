@@ -31,7 +31,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </nav>
       </div>
       <div class="header-actions">
-        <a class="icon-btn" href="/?view=plats#tous-les-plats" aria-label="Rechercher">🔍</a>
         <?php if (($_SESSION['user_role'] ?? null) === 'admin'): ?>
           <a class="icon-btn" href="/dashboard.php" title="Tableau de bord administrateur">👤</a>
           <a href="/logout.php">Déconnexion</a>

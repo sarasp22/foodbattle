@@ -103,7 +103,6 @@ $reviews = $s->fetchAll();
 
         <div class="reviews-header">
             <h2>Avis des utilisateurs</h2>
-            <a href="#form-avis" class="text-link" style="color: var(--orange-dark);">Donner mon avis →</a>
         </div>
 
         <?php foreach ($reviews as $r):
