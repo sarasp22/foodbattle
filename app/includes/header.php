@@ -36,6 +36,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <a href="/logout.php">Déconnexion</a>
         <?php elseif (isset($_SESSION['user_id'])): ?>
           <span>Bonjour <?= h($_SESSION['user_nickname']) ?></span>
+          <a href="/compte.php">Mon compte</a>
           <a href="/logout.php">Déconnexion</a>
         <?php else: ?>
           <a href="/login.php">Connexion</a>
