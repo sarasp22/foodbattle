@@ -263,6 +263,70 @@
 
 .icon-action:hover { background: var(--page); }
 
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    background: var(--page);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background .15s, transform .15s;
+}
+
+.btn-back:hover {
+    background: #ececf2;
+    transform: translateY(-1px);
+}
+
+.admin-form-card {
+    max-width: 540px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--page);
+}
+
+.admin-form-card form,
+.reviewform {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 520px;
+}
+
+.admin-form-card label,
+.reviewform label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+.admin-form-card input,
+.admin-form-card select,
+.admin-form-card textarea,
+.reviewform input,
+.reviewform select,
+.reviewform textarea {
+    margin-top: 0;
+}
+
+.admin-form-card button[type="submit"],
+.admin-form-card button,
+.reviewform button {
+    align-self: flex-start;
+    margin-top: 6px;
+    padding: 12px 24px;
+}
+
 /* Transformation de la sidebar en menu horizontal supérieur fixe sur mobile */
 @media (max-width: 768px) {
     .login-card {
@@ -392,4 +456,25 @@
     .icon-action:hover { background: var(--page); }
 }
 
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: var(--yellow);
+    border: 0;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 900;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    transition: filter .15s, transform .15s;
+}
 
+.btn-back:hover {
+    filter: brightness(.97);
+    transform: translateY(-1px);
+    color: var(--ink);
+}

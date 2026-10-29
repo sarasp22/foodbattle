@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Vérifie les champs du plat.';
     }
 }
-
+$establishments = $db->query('SELECT id, name, city FROM establishments ORDER BY name')->fetchAll();
 $items = $db->query('SELECT * FROM dishes ORDER BY id DESC')->fetchAll();
 ?>
 
@@ -52,6 +52,13 @@ $items = $db->query('SELECT * FROM dishes ORDER BY id DESC')->fetchAll();
             <form method="post" enctype="multipart/form-data" style="max-width: 520px; margin-top: 14px;">
                 <input type="hidden" name="token" value="<?= csrf() ?>">
                 <label>Nom <input name="name" maxlength="120" required></label>
+                <label>Établissement
+    <select name="establishment_id" required>
+        <?php foreach ($establishments as $est): ?>
+            <option value="<?= (int) $est['id'] ?>"><?= h($est['name']) ?> (<?= h($est['city']) ?>)</option>
+        <?php endforeach ?>
+    </select>
+</label>
                 <label>Catégorie
                     <select name="category">
                         <option value="burger">Burger</option>
