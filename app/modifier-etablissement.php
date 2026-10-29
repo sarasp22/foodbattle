@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
 $title = 'Modifier un établissement';
+$hide_site_header = true;
 require 'includes/header.php';
 require 'includes/db.php';
 
@@ -38,17 +39,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<p><a href="/etablissements.php">← Établissements</a></p>
-<h1>Modifier un établissement</h1>
-<?php if (isset($saved)): ?><p class="message">Modifications enregistrées.</p><?php endif ?>
-<?php if (isset($error)): ?><p class="alert-error" role="alert"><?= h($error) ?></p><?php endif ?>
 
-<form method="post" class="reviewform">
-    <input type="hidden" name="token" value="<?= csrf() ?>">
-    <label>Nom<input name="name" value="<?= h($e['name']) ?>" maxlength="120" required></label>
-    <label>Ville<input name="city" value="<?= h($e['city']) ?>" maxlength="80" required></label>
-    <label>Adresse<input name="address" value="<?= h($e['address']) ?>" required></label>
-    <button type="submit">Enregistrer</button>
-</form>
+<div class="admin-layout">
+    <?php $admin_active = 'etablissements'; require 'includes/admin_sidebar.php'; ?>
 
-<?php require 'includes/footer.php'; ?>
+    <div class="admin-content">
+        <div class="admin-header">
+          <h1>Modifier un établissement</h1>
+          <a class="button btn-back" href="/etablissements.php">← Retour aux établissements</a>
+        </div>
+
+        <?php if (isset($saved)): ?><p class="message">Modifications enregistrées.</p><?php endif ?>
+        <?php if (isset($error)): ?><p class="alert-error" role="alert"><?= h($error) ?></p><?php endif ?>
+
+        <div class="admin-form-card">
+            <form method="post" class="reviewform">
+                <input type="hidden" name="token" value="<?= csrf() ?>">
+                <label>Nom
+                    <input name="name" value="<?= h($e['name']) ?>" maxlength="120" required>
+                </label>
+                <label>Ville
+                    <input name="city" value="<?= h($e['city']) ?>" maxlength="80" required>
+                </label>
+                <label>Adresse
+                    <input name="address" value="<?= h($e['address']) ?>" required>
+                </label>
+                <button type="submit">Enregistrer les modifications</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
