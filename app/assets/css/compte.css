@@ -1,0 +1,22 @@
+.login-card > .back-home-link {
+  display: block;
+  width: fit-content;
+  padding: 8px 12px;
+  margin: 0 auto 24px;
+}
+
+.login-card .cancel-link-container {
+  text-align: center;
+}
+
+.login-card .cancel-link-container .back-home-link {
+  display: inline-block;
+  padding: 8px 12px;
+  margin-bottom: 24px;
+}
+
+.login-card a.btn-full {
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
