@@ -27,13 +27,40 @@ if (!$user) {
 }
 
 $editing = isset($_GET['modifier']) && $_GET['modifier'] === '1';
+$deleting = isset($_GET['supprimer']) && $_GET['supprimer'] === '1';
 $errors = [];
 $success = '';
 
 $nickname = $user['nickname'];
 $email = $user['email'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (
+  $_SERVER['REQUEST_METHOD'] === 'POST'
+  && ($_POST['action'] ?? '') === 'supprimer_compte'
+) {
+  check_post();
+
+  $currentPassword = $_POST['current_password'] ?? '';
+
+  if (!password_verify($currentPassword, $user['password_hash'])) {
+    $errors[] = 'Le mot de passe actuel est incorrect.';
+    $deleting = true;
+  } else {
+    $statement = $db->prepare('DELETE FROM users WHERE id = ?');
+    $statement->execute([$userId]);
+
+    $_SESSION = [];
+    session_destroy();
+
+    header('Location: /');
+    exit();
+  }
+}
+
+if (
+  $_SERVER['REQUEST_METHOD'] === 'POST'
+  && ($_POST['action'] ?? '') !== 'supprimer_compte'
+) {
   $editing = true;
   check_post();
 
@@ -133,7 +160,7 @@ require_once __DIR__ . '/includes/header.php';
       </p>
     <?php endif; ?>
 
-    <?php if (!$editing): ?>
+    <?php if (!$editing && !$deleting): ?>
 
       <p>
         <strong>Pseudo :</strong>
@@ -148,13 +175,16 @@ require_once __DIR__ . '/includes/header.php';
       <a href="/compte.php?modifier=1" class="btn-full">
         Modifier mon profil
       </a>
+      <a href="/compte.php?supprimer=1" class="btn-full">
+        Supprimer mon compte
+      </a>
       <a href="/" class="back-home-link">Retour à l’accueil</a>
 
       <div class="login-mascot-footer">
         <img src="/assets/images/logo.png" alt="" onerror="this.style.display='none'">
       </div>
 
-    <?php else: ?>
+    <?php elseif ($editing): ?>
 
       <form method="post" action="/compte.php?modifier=1">
         <label for="nickname">Pseudo</label>
@@ -223,6 +253,33 @@ require_once __DIR__ . '/includes/header.php';
         <img src="/assets/images/logo.png" alt="" onerror="this.style.display='none'">
       </div>
 
+    <?php elseif ($deleting): ?>
+      <h2>Supprimer mon compte</h2>
+      <p>
+        Cette action est irréversible. Votre compte et les données
+        associées seront supprimés.
+      </p>
+      <form method="post" action="/compte.php?supprimer=1">
+        <input type="hidden" name="action" value="supprimer_compte">
+        <input type="hidden" name="token" value="<?= h(csrf()) ?>">
+        <label for="delete_password">Mot de passe actuel</label>
+        <input
+          type="password"
+          id="delete_password"
+          name="current_password"
+          autocomplete="current-password"
+          required>
+        <button type="submit" class="btn-full">
+          Confirmer la suppression
+        </button>
+        <div class="cancel-link-container">
+          <a href="/compte.php" class="back-home-link">Annuler</a>
+        </div>
+      </form>
+
+      <div class="login-mascot-footer">
+        <img src="/assets/images/logo.png" alt="" onerror="this.style.display='none'">
+      </div>
     <?php endif; ?>
   </div>
 </section>
