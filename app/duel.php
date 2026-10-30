@@ -89,7 +89,6 @@ $pair = $stmt->fetchAll();
 <section class="dish-section duel-wrapper">
     <div class="section-heading">
         <h2><span class="heading-icon">⚔️</span> Duel des plats</h2>
-        <a href="/classement.php" class="text-link">Voir le classement →</a>
     </div>
     <p class="duel-subtitle">Deux spécialités s’affrontent : choisis celle qui te fait le plus envie pour lui donner <strong>+1 vote</strong> !</p>
 
