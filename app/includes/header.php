@@ -13,6 +13,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <title><?= h($title ?? 'FoodBattle') ?> · FoodBattle</title>
   <link rel="stylesheet" href="/assets/style.css">
   <link rel="stylesheet" href="/assets/css/header.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
   <link rel="stylesheet" href="/assets/css/duel.css">
   <link rel="stylesheet" href="/assets/css/roue.css">
 </head>
