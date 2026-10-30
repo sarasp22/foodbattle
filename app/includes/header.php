@@ -10,6 +10,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/assets/images/burger.ico">
   <title><?= h($title ?? 'FoodBattle') ?> · FoodBattle</title>
   <link rel="stylesheet" href="/assets/style.css">
   <link rel="stylesheet" href="/assets/css/header.css">
